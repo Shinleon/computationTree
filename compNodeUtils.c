@@ -29,7 +29,7 @@ void toCharNode(struct compNode* n)
     case MUL:
       printf("MUL(");
     case QUO:
-      printf("EXP                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ccfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(");
+      printf("EXP(");
     case SUB:
       printf("EXP(");
     case ADD:
