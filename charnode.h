@@ -13,7 +13,8 @@ typedef struct charnode {
 } charnode;
 
 charnode* makeCharnode(char c);
-void freeCharnode(charnode* head);
+void freeCharnodeList(charnode* head);
+charnode* append(charnode* head, charnode* toAppend);
 void printCharnode(charnode* head);
 int length(charnode* head);
 char* toString(charnode* head);

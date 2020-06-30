@@ -16,6 +16,7 @@ typedef struct charnode {
 charnode* makeCharnode(char c);
 void freeCharnodeList(charnode* head);
 void freeCharnode(charnode* singlular);
+charnode* append(charnode* head, charnode* toAppend);
 void printCharnode(charnode* head);
 int length(charnode* head);
 charnode* trimCharnode(charnode* head);
@@ -43,12 +44,24 @@ void freeCharnode(charnode* singular){
   free(singular);
 }
 
+charnode* append(charnode* head, charnode* toAppend){
+  if(!head){
+    return toAppend;
+  }
+  charnode* temp = head;
+  while(temp->next){
+    temp = temp->next;
+  }
+  temp->next = toAppend;
+  return head;
+}
+
 void printCharnode(charnode* head) {
   if (head) {
     printf("%c -> ", head->data);
     printCharnode(head->next);
   } else {
-    printf("(nil char)\n");
+    printf("(nil)\n");
   }
 }
 
@@ -59,6 +72,10 @@ int length(charnode* head) {
   return 0;
 }
 
+/* cuts white space out of a charnode list
+ * so that when taking in the string '    hello  '
+ * the char node holds h->e->l->l->o->(nil)
+ */
 charnode* trimCharnode(charnode* head) {
   if(head){
     if(head->data == ' '){
@@ -96,14 +113,14 @@ char* wordFromScan() {
   charnode* temp = NULL;
   char c = getc(stdin);
   int beginning = 1;
-  if (c != '\n' && c != EOF) {
+  if (c != '\n') {
     // printf("\"%c",c);
     if( c != ' ' || beginning != 1 ) {
       item = makeCharnode(c);
       temp = item;
     }
     c = getc(stdin);
-    while (c != '\n' && c != EOF) {
+    while (c != '\n') {
       // printf("%c",c);
       if(temp) {
 	temp->next = makeCharnode(c);
