@@ -1,8 +1,3 @@
-/* FINAL: charnode.c
- * Leonard Shin
- * CSE 374
- * SPRING 2020
- */
 
 #include <stdio.h>
 #include <string.h>
