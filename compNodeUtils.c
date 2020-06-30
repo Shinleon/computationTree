@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 #include "charnode.h"
-#include "nodeDef.h"
+#include "compNodeDef.h"
 
 struct compNode* makeCompNode(
 	       enum operations type, 
@@ -19,8 +19,9 @@ struct compNode* makeCompNode(
   return ret;
 }
 
-void printNode(struct compNode* n)
+void toCharNode(struct compNode* n)
 {
+  charnode* ret = NULL;
   switch(n->oper)
   {
     case EXP:
