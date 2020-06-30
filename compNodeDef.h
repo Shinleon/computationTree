@@ -18,11 +18,11 @@ enum operations
   VAR, NUM   // 5, 6
 };
 
-struct Node 
+struct compNode 
 {
   enum operations oper;
-  struct Node* left;
-  struct Node* right;
+  struct compNode* left;
+  struct compNode* right;
   union Data* d;
 };
 

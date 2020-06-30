@@ -2,15 +2,16 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+#include "charnode.h"
 #include "nodeDef.h"
 
-struct Node* makeNode(
+struct compNode* makeCompNode(
 	       enum operations type, 
-	       struct Node* l, 
-	       struct Node* r,
+	       struct compNode* l, 
+	       struct compNode* r,
 	       union Data* d)
 {
-  struct Node* ret = malloc(sizeof(struct Node));
+  struct compNode* ret = malloc(sizeof(struct compNode));
   ret->oper = type;
   ret->left = l;
   ret->right = r;
@@ -18,7 +19,7 @@ struct Node* makeNode(
   return ret;
 }
 
-void printNode(struct Node* n)
+void printNode(struct compNode* n)
 {
   switch(n->oper)
   {
@@ -43,7 +44,7 @@ void printNode(struct Node* n)
 int main() {
   union Data* leftD = malloc(sizeof(union Data));
   (*leftD).num = 8.0;
-  struct Node* left = makeNode(NUM, NULL, NULL, leftD);
+  struct compNode* left = makeCompNode(NUM, NULL, NULL, leftD);
   free(leftD);
   free(left);
   printf("size of uintptr_t: %ld\n", sizeof(uintptr_t));
