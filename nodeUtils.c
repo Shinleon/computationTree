@@ -25,9 +25,9 @@ void printNode(struct Node* n)
     case EXP:
       printf("EXP(");
     case MUL:
-      printf("EXP(");
+      printf("MUL(");
     case QUO:
-      printf("EXP(");
+      printf("EXP                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ccfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff(");
     case SUB:
       printf("EXP(");
     case ADD:
