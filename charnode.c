@@ -3,12 +3,16 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define zero_char 48
+
 typedef struct charnode {
   char data;
   struct charnode* next;
 } charnode;
 
 charnode* makeCharnode(char c);
+charnode* strToCharlist(char* arg);
+charnode* intToCharlist(int num);
 void freeCharnodeList(charnode* head);
 void freeCharnode(charnode* singlular);
 charnode* append(charnode* head, charnode* toAppend);
@@ -22,6 +26,39 @@ charnode* makeCharnode(char c) {
   charnode* ret = malloc(sizeof(charnode));
   ret->data = c;
   ret->next = NULL;
+  return ret;
+}
+
+charnode* strToCharlist(char* arg){
+  charnode* ret = NULL;
+  charnode* temp = ret;
+  for(int i = 0; i < strlen(arg); i++){
+    if(ret == NULL){
+      ret = makeCharnode(arg[i]);
+      temp = ret;
+    } else {
+      temp->next = makeCharnode(arg[i]);
+      temp = temp->next;
+    }
+  }
+  return ret;
+}
+
+charnode* intToCharlist(int num){
+  charnode* ret = NULL;
+  charnode* temp = ret;
+  while(num != 0){
+    char numeral = (char)(num % 10 + zero_char);
+    if(ret == NULL){
+      ret = makeCharnode(numeral);
+      temp = ret;
+    } else {
+      ret = makeCharnode(numeral);
+      ret->next = temp;
+      temp = ret;
+    }
+    num /= 10;
+  }
   return ret;
 }
 
