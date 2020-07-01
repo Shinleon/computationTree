@@ -58,7 +58,7 @@ charnode *mergeOnOperator(struct compNode *node, char operator)
 int main()
 {
   union Data *leftD = malloc(sizeof(union Data));
-  (*leftD).num = 23;
+  (*leftD).num = 23 ;
   struct compNode *left = makeCompNode(NUM, NULL, NULL, leftD);
 
   union Data *rightD = malloc(sizeof(union Data));
