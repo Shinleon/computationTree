@@ -19,7 +19,7 @@ charnode* append(charnode* head, charnode* toAppend);
 void printCharnode(charnode* head);
 int length(charnode* head);
 charnode* trimCharnode(charnode* head);
-char* toString(charnode* head);
+char* charnodeToString(charnode* head);
 char* wordfromscan();
 
 charnode* makeCharnode(char c) {
@@ -127,7 +127,7 @@ charnode* trimCharnode(charnode* head) {
   }
 }
 
-char* toString(charnode* head) {
+char* charnodeToString(charnode* head) {
   //head = trimCharnode(head);
   int len = length(head);
   char* ret = malloc(sizeof(char)*(len + 1));
@@ -170,7 +170,7 @@ char* wordFromScan() {
   }
   trimCharnode(item);
   // printCharnode(item);
-  char* ret = toString(item);
+  char* ret = charnodeToString(item);
   freeCharnodeList(item);
   return ret;
 }
