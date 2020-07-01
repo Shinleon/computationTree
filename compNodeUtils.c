@@ -5,12 +5,14 @@
 #include "charnode.h"
 #include "compNodeDef.h"
 
+char* compNodeToString(struct compNode* node);
+
 charnode *mergeOnOperator(struct compNode *node, char operator);
 
 struct compNode *makeCompNode(
     enum operations type,
-    struct compNode *l,
-    struct compNode *r,
+    struct compNode* l,
+    struct compNode* r,
     union Data* d)
 {
   struct compNode *ret = malloc(sizeof(struct compNode));
@@ -20,7 +22,8 @@ struct compNode *makeCompNode(
   ret->d = d;
   return ret;
 }
-charnode *toCharnode(struct compNode *node)
+
+charnode *compNodeToCharnode(struct compNode *node)
 {
   if (!node)
   {
@@ -48,10 +51,47 @@ charnode *toCharnode(struct compNode *node)
 
 charnode *mergeOnOperator(struct compNode *node, char operator)
 {
-  charnode *ret = toCharnode(node->left);
+  charnode *ret = compNodeToCharnode(node->left);
   charnode *mid = makeCharnode(operator);
-  mid = append(mid, toCharnode(node->right));
+  mid = append(mid, compNodeToCharnode(node->right));
   ret = append(ret, mid);
+  return ret;
+}
+
+double evalCompNode(struct compNode* node)
+{
+  if (node)
+  {
+    
+    switch (node->oper)
+    {
+    case EXP:
+      // will fix this
+      // https://stackoverflow.com/questions/1375953/how-to-calculate-an-arbitrary-power-root
+      return (int)evalCompNode(node->left)  ^ (int)evalCompNode(node->right);
+    case MUL:
+      return evalCompNode(node->left) * evalCompNode(node->right);
+    case QUO:
+      return evalCompNode(node->left) / evalCompNode(node->right);
+    case SUB:
+      return evalCompNode(node->left) - evalCompNode(node->right);
+    case ADD:
+      return evalCompNode(node->left) + evalCompNode(node->right);
+    case VAR:
+      // need to make environment aka, dictionary mapping strings to computation
+      // will replace soon.
+      return 0;
+    case NUM:
+      return node->d->num;
+   }
+  }
+  exit(-1);
+}
+char* compNodeToString(struct compNode* node)
+{
+  charnode* temp = compNodeToCharnode(node);
+  char* ret = charnodeToString(temp);
+  freeCharnodeList(temp);
   return ret;
 }
 
@@ -62,18 +102,39 @@ int main()
   struct compNode *left = makeCompNode(NUM, NULL, NULL, leftD);
 
   union Data *rightD = malloc(sizeof(union Data));
-  (*rightD).varName = "x";
-  struct compNode *right = makeCompNode(VAR, NULL, NULL, rightD);
+  (*rightD).num = 7;
+  struct compNode *right = makeCompNode(NUM, NULL, NULL, rightD);
 
   struct compNode *mid = makeCompNode(QUO, left, right, NULL);
 
   printf("size of uintptr_t: %ld\n", sizeof(uintptr_t));
   printf("size of double: %ld\n", sizeof(double));
+  printf("size of enum: %ld\n", sizeof(NUM));
+  printf("size of union Data: %ld\n", sizeof(*rightD));
 
-  printf("left node is: %s\n", charnodeToString(toCharnode(left)));
-  printf("right node is: %s\n", charnodeToString(toCharnode(right)));
-  printf("mid node is %s\n", charnodeToString(toCharnode(mid)));
+  //         ++ ---------
+  //         00 000000000
+  //         10.123456789
+  // double x = 29.33333333;
+  // mod doesn't work on non integers
+  // how to change float to charnode* is mystery so far;
+  // printf("%f mod 10: " x, x % 10);
+
+
+  char* leftStr = compNodeToString(left);
+  printf("left node is: %s\n", leftStr);
+  free(leftStr);
+  char* rightStr = compNodeToString(right);
+  printf("right node is: %s\n", rightStr);
+  free(rightStr);
+  char* midStr = compNodeToString(mid);
+  printf("mid node is %s\n", midStr);
+  free(midStr);
+  printf("mid eval is: %f\n", evalCompNode(mid));
 
   free(leftD);
   free(left);
+  free(rightD);
+  free(right);
+  free(mid);
 }

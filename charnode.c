@@ -13,6 +13,7 @@ typedef struct charnode {
 charnode* makeCharnode(char c);
 charnode* strToCharlist(char* arg);
 charnode* intToCharlist(int num);
+charnode* doubleToCharlist(double x);
 void freeCharnodeList(charnode* head);
 void freeCharnode(charnode* singlular);
 charnode* append(charnode* head, charnode* toAppend);
@@ -60,6 +61,10 @@ charnode* intToCharlist(int num){
     num /= 10;
   }
   return ret;
+}
+
+charnode* doubleToCharlist(double x){
+  exit(-3);
 }
 
 void freeCharnodeList(charnode* head) {

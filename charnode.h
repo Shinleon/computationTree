@@ -11,7 +11,6 @@ charnode* makeCharnode(char c);
 charnode* strToCharlist(char* arg);
 charnode* intToCharlist(int num);
 void freeCharnodeList(charnode* head);
-void freeCharnode(charnode* singlular);
 charnode* append(charnode* head, charnode* toAppend);
 void printCharnode(charnode* head);
 int length(charnode* head);
