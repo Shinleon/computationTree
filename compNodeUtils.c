@@ -11,7 +11,7 @@ struct compNode *makeCompNode(
     enum operations type,
     struct compNode *l,
     struct compNode *r,
-    union Data *d)
+    union Data* d)
 {
   struct compNode *ret = malloc(sizeof(struct compNode));
   ret->oper = type;
@@ -69,6 +69,7 @@ int main()
 
   printf("size of uintptr_t: %ld\n", sizeof(uintptr_t));
   printf("size of double: %ld\n", sizeof(double));
+
   printf("left node is: %s\n", charnodeToString(toCharnode(left)));
   printf("right node is: %s\n", charnodeToString(toCharnode(right)));
   printf("mid node is %s\n", charnodeToString(toCharnode(mid)));
