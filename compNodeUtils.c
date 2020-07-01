@@ -22,8 +22,6 @@ struct compNode *makeCompNode(
 }
 charnode *toCharnode(struct compNode *node)
 {
-  printf("node is at: %p\n", node);
-  printf("node is of type: %d\n", node->oper);
   if (!node)
   {
     return NULL;
@@ -32,26 +30,18 @@ charnode *toCharnode(struct compNode *node)
   {
   case EXP:
     return mergeOnOperator(node, '^');
-    break;
   case MUL:
     return mergeOnOperator(node, '*');
-    ;
-    break;
   case QUO:
     return mergeOnOperator(node, '/');
-    break;
   case SUB:
     return mergeOnOperator(node, '-');
-    break;
   case ADD:
     return mergeOnOperator(node, '+');
-    break;
   case VAR:
     return strToCharlist(node->d->varName);
-    break;
   case NUM:
     return intToCharlist(node->d->num);
-    break;
   }
   return NULL;
 }
@@ -75,7 +65,7 @@ int main()
   (*rightD).varName = "x";
   struct compNode *right = makeCompNode(VAR, NULL, NULL, rightD);
 
-  struct compNode *mid = makeCompNode(MUL, left, right, NULL);
+  struct compNode *mid = makeCompNode(QUO, left, right, NULL);
 
   printf("size of uintptr_t: %ld\n", sizeof(uintptr_t));
   printf("size of double: %ld\n", sizeof(double));
