@@ -98,11 +98,11 @@ char* compNodeToString(struct compNode* node)
 int main()
 {
   union Data *leftD = malloc(sizeof(union Data));
-  (*leftD).num = 23 ;
+  (*leftD).num = 4.5 ;
   struct compNode *left = makeCompNode(NUM, NULL, NULL, leftD);
 
   union Data *rightD = malloc(sizeof(union Data));
-  (*rightD).num = 7;
+  (*rightD).num = 2;
   struct compNode *right = makeCompNode(NUM, NULL, NULL, rightD);
 
   struct compNode *mid = makeCompNode(QUO, left, right, NULL);
