@@ -13,7 +13,6 @@ charnode* intToCharlist(int num);
 charnode* floatToCharlist(float f);
 void freeCharnodeList(charnode* head);
 charnode* append(charnode* head, charnode* toAppend);
-void printCharnode(charnode* head);
 int length(charnode* head);
 char* charnodeToString(charnode* head);
 
