@@ -10,6 +10,7 @@ typedef struct charnode {
 charnode* makeCharnode(char c);
 charnode* strToCharlist(char* arg);
 charnode* intToCharlist(int num);
+charnode* floatToCharlist(float f);
 void freeCharnodeList(charnode* head);
 charnode* append(charnode* head, charnode* toAppend);
 void printCharnode(charnode* head);

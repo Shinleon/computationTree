@@ -44,7 +44,8 @@ charnode *compNodeToCharnode(struct compNode *node)
   case VAR:
     return strToCharlist(node->d->varName);
   case NUM:
-    return intToCharlist(node->d->num);
+    return floatToCharlist(node->d->num);
+    //return intToCharlist((int)node->d->num);
   }
   return NULL;
 }
@@ -58,7 +59,7 @@ charnode *mergeOnOperator(struct compNode *node, char operator)
   return ret;
 }
 
-double evalCompNode(struct compNode* node)
+float evalCompNode(struct compNode* node)
 {
   if (node)
   {
@@ -98,7 +99,7 @@ char* compNodeToString(struct compNode* node)
 int main()
 {
   union Data *leftD = malloc(sizeof(union Data));
-  (*leftD).num = 4.5 ;
+  (*leftD).num = 4.5*.0000001 ;
   struct compNode *left = makeCompNode(NUM, NULL, NULL, leftD);
 
   union Data *rightD = malloc(sizeof(union Data));
@@ -106,12 +107,7 @@ int main()
   struct compNode *right = makeCompNode(NUM, NULL, NULL, rightD);
 
   struct compNode *mid = makeCompNode(QUO, left, right, NULL);
-
-  printf("size of uintptr_t: %ld\n", sizeof(uintptr_t));
-  printf("size of double: %ld\n", sizeof(double));
-  printf("size of enum: %ld\n", sizeof(NUM));
-  printf("size of union Data: %ld\n", sizeof(*rightD));
-
+  
   //         ++ ---------
   //         00 000000000
   //         10.123456789
@@ -130,7 +126,7 @@ int main()
   char* midStr = compNodeToString(mid);
   printf("mid node is %s\n", midStr);
   free(midStr);
-  printf("mid eval is: %f\n", evalCompNode(mid));
+  printf("mid eval is: %.3e\n", evalCompNode(mid));
 
   free(leftD);
   free(left);

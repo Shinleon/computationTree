@@ -63,10 +63,23 @@ charnode* intToCharlist(int num){
   return ret;
 }
 
-charnode* doubleToCharlist(double x){
-  exit(-3);
+charnode* floatToCharlist(float f){
+  char output[50];
+  snprintf(output, 50, "%.3e", f);
+  return strToCharlist(output);
 }
-
+// charnode* floatToCharlist(float f){
+//   printf("printing float: %f: ", f);
+//   long int size = sizeof(f);
+//   unsigned char bytes_temp[size];
+//   memcpy(bytes_temp, (&f), size);
+//   for(int i = 0; i < size; i++)
+//   {
+//     printf("%d ", bytes_temp[i]);
+//   }
+//   printf("\nEnd print\n");
+//   return NULL;
+// }
 void freeCharnodeList(charnode* head) {
   //printf("entering freecharnode list: %p\n", head);
   if (head) {
