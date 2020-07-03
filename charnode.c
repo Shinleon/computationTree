@@ -10,15 +10,24 @@ typedef struct charnode {
   struct charnode* next;
 } charnode;
 
+// means of generating charlists/nodes
 charnode* makeCharnode(char c);
 charnode* strToCharlist(char* arg);
 charnode* intToCharlist(int num);
 charnode* doubleToCharlist(double x);
+
+// freeing charlists/nodes
 void freeCharnodeList(charnode* head);
 void freeCharnode(charnode* singlular);
-charnode* append(charnode* head, charnode* toAppend);
-void printCharnode(charnode* head);
+
+// moving around nodes
 int length(charnode* head);
+charnode* append(charnode* head, charnode* toAppend);
+
+// debugging tool to see raw charnode structure
+void printCharnode(charnode* head);
+
+// output, input interpretting and cleanup
 charnode* trimCharnode(charnode* head);
 char* charnodeToString(charnode* head);
 char* wordfromscan();
