@@ -5,6 +5,17 @@
 #include "charnode.h"
 #include "compNodeDef.h"
 
+// compiler design and symbolic computing stuff
+// might be worth looking into...
+// https://www.youtube.com/playlist?list=PLEbnTDJUr_IcPtUXFy2b1sGRPsLFMghhS
+
+// also, for algorithms,
+// this guy makes himself a god
+// https://www.youtube.com/channel/UCx-kFfzekMbhODaBss-ZnsA
+
+// also, CSE 331 for summer 2020
+// https://www.youtube.com/watch?v=hX-hF1sDR1A
+
 char* compNodeToString(struct compNode* node);
 
 charnode *mergeOnOperator(struct compNode *node, char operator);
