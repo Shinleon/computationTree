@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-
 #ifndef NODEDEF_H
 #define NODEDEF_H
 
