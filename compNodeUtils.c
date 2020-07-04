@@ -17,6 +17,10 @@
 // [watch on 2x speed, he talks slow]
 // https://www.youtube.com/watch?v=hX-hF1sDR1A
 
+// link on encapsulating in c
+// not sure if I can implement this
+// https://stackoverflow.com/a/29461983  
+
 char* compNodeToString(struct compNode* node);
 
 charnode *mergeOnOperator(struct compNode *node, char operator);
