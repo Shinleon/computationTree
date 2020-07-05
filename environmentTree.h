@@ -3,7 +3,7 @@
 #ifndef ENVIRONMENT_TREE_H
 #define ENVIRONMENT_TREE_H
 
-struct environmentNode *makeEnvironmentNode(char *name, struct compNode *exp);
+struct environmentNode *makeEnvironmentNode(char* name, struct compNode *exp);
 
 struct environmentNode* placeEnvironmentNode(
   struct environmentNode* root,

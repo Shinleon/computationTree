@@ -66,3 +66,24 @@ void printEnvironmentNode(struct environmentNode* root)
     printf("(NIL)");
   }
 }
+
+struct environmentNode* getEnvironmentNode(struct environmentNode* root, char* searchKey)
+{
+  if(root)
+  {
+    int x = strcomp(searchKey, root->varName);
+    if(x < 0)
+    {
+      return getEnvironmentNode(root->leftenv, searchKey);
+    }
+    else if (x > 0)
+    {
+      return getEnvironmentNode(root->rightenv, searchKey);
+    }
+    else 
+    {
+      return root;
+    }
+  }
+  return NULL;
+}
