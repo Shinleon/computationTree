@@ -73,16 +73,19 @@ int main()
   free(midStr);
   printf("mid eval is: %.3e\n", evalCompNode(mid));
 
+  // EnvironmentNode tests. 
   struct environmentNode* temp = makeEnvironmentNode("hello", NULL);
   temp = placeEnvironmentNode(NULL, temp);
   struct environmentNode* temp2 = makeEnvironmentNode("oh no", NULL);
   temp = placeEnvironmentNode(temp, temp2);
   temp = placeEnvironmentNode(temp, makeEnvironmentNode("abc", NULL));
   printEnvironmentNode(temp);
-  printf("\n");
-  free(leftD);
-  free(left);
-  free(rightD);
-  free(right);
-  free(mid);
+
+  // Not sure I care about freeing variables during testing
+  // printf("\n");
+  // free(leftD);
+  // free(left);
+  // free(rightD);
+  // free(right);
+  // free(mid);
 }

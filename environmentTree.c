@@ -71,7 +71,7 @@ struct environmentNode* getEnvironmentNode(struct environmentNode* root, char* s
 {
   if(root)
   {
-    int x = strcomp(searchKey, root->varName);
+    int x = strcmp(searchKey, root->varName);
     if(x < 0)
     {
       return getEnvironmentNode(root->leftenv, searchKey);
