@@ -39,7 +39,7 @@ struct compNode *makeCompNode(
   return ret;
 }
 
-charnode *compNodeToCharnode(struct compNode *node)
+charnode *compNodeToCharnode(struct compNode* node)
 {
   if (!node)
   {
@@ -70,8 +70,11 @@ charnode *mergeOnOperator(struct compNode *node, char operator)
 {
   charnode *ret = compNodeToCharnode(node->left);
   charnode *mid = makeCharnode(operator);
-  mid = append(mid, compNodeToCharnode(node->right));
+  charnode *aft = compNodeToCharnode(node->right);
+  aft = append(aft, makeCharnode(')'));
+  mid = append(mid, aft);
   ret = append(ret, mid);
+  ret = append(makeCharnode('('), ret);
   return ret;
 }
 

@@ -9,10 +9,11 @@ union Data
 
 enum operations 
 {
-  EXP,       // 0
-  QUO, MUL,  // 1, 2
-  ADD, SUB,  // 3, 4
-  VAR, NUM   // 5, 6
+             // raw   // ((raw) + 1) / 2
+  EXP,       // 0     // 0 
+  QUO, MUL,  // 1, 2  // 1
+  ADD, SUB,  // 3, 4  // 2
+  VAR, NUM   // 5, 6  // 3
 };
 
 struct compNode 

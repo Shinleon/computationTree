@@ -6,7 +6,7 @@
 #include "compNodeUtils.h"
 #include "environment.h"
 
-#define MAX(A, B) ((A)> (B) ? A : B)
+#define MAX(A, B) ((A)> (B) ? (A) : (B))
 
 struct environmentNode *makeEnvironmentNode(char *name, struct compNode *exp)
 {
@@ -55,11 +55,13 @@ void printEnvironmentNode(struct environmentNode* root)
 {
   if(root)
   {
-    printf("Name: %s, Left {", root->varName);
+    char* rootCompStr = compNodeToString(root->expression);
+    printf("Name: %s, compTree = '%s' Left { ", root->varName, rootCompStr);
+    free(rootCompStr);
     printEnvironmentNode(root->leftenv);
-    printf("}, Right{");
+    printf(" }, Right { ");
     printEnvironmentNode(root->rightenv);
-    printf("}");
+    printf(" }");
   }
   else
   {
