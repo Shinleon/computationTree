@@ -5,8 +5,11 @@
 #include "charnode.h"
 #include "compNodeDef.h"
 #include "compNodeUtils.h"
+#include "environment.h"
+#include "environmentTree.h"
 
-// gcc -std=c11 -Wall -g -o test computer.c compNodeUtils.c charnode.c
+// appropriate gcc call //
+// gcc -std=c11 -Wall -g -o test computer.c compNodeUtils.c charnode.c environmentTree.c -lm
 
 float evalCompNode(struct compNode* node)
 {
@@ -29,7 +32,7 @@ float evalCompNode(struct compNode* node)
     case ADD:
       return evalCompNode(node->left) + evalCompNode(node->right);
     case VAR:
-      // need to make environment aka, dictionary mapping strings to computation
+      // need to make environment aka, envirTree 
       // will replace soon.
       return 0;
     case NUM:
@@ -70,6 +73,13 @@ int main()
   free(midStr);
   printf("mid eval is: %.3e\n", evalCompNode(mid));
 
+  struct environmentNode* temp = makeEnvironmentNode("hello", NULL);
+  temp = placeEnvironmentNode(NULL, temp);
+  struct environmentNode* temp2 = makeEnvironmentNode("oh no", NULL);
+  temp = placeEnvironmentNode(temp, temp2);
+  temp = placeEnvironmentNode(temp, makeEnvironmentNode("abc", NULL));
+  printEnvironmentNode(temp);
+  printf("\n");
   free(leftD);
   free(left);
   free(rightD);

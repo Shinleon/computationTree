@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "compNodeDef.h"
+#include "compNodeUtils.h"
+#include "environment.h"
+
+#define MAX(A, B) ((A)> (B) ? A : B)
+
+struct environmentNode *makeEnvironmentNode(char *name, struct compNode *exp)
+{
+  struct environmentNode *ret = malloc(sizeof(struct environmentNode));
+  ret->varName = name;
+  ret->height = 0;
+  ret->expression = exp;
+  ret->leftenv = NULL;
+  ret->rightenv = NULL;
+  return ret;
+}
+
+struct environmentNode* placeEnvironmentNode(
+  struct environmentNode* root,
+  struct environmentNode* toPlace)
+{
+  if(root)
+  {
+    int x = strcmp(toPlace->varName, root->varName);
+    if(x < 0)
+    {
+      root->leftenv = placeEnvironmentNode(root->leftenv, toPlace);
+    }
+    else if (x > 0)
+    {
+      root->rightenv = placeEnvironmentNode(root->rightenv, toPlace);
+    }
+    else
+    {
+      // this needs to be changed to allow variable redefinition;
+      printf("Duplicate variable name in environment: %s\n", root->varName);
+      printf("Variable not modified; retaining previous definition.");
+    }
+    int leftheight = root->leftenv ? root->leftenv->height : -1;
+    int rightheight = root->rightenv ? root->rightenv->height : -1;
+    root->height = 1 + MAX(leftheight, rightheight);
+
+    // AVL operations go here, to balance tree, using leftheight and rightheight
+
+    return root;
+  }
+  return toPlace;
+}
+
+void printEnvironmentNode(struct environmentNode* root)
+{
+  if(root)
+  {
+    printf("Name: %s, Left {", root->varName);
+    printEnvironmentNode(root->leftenv);
+    printf("}, Right{");
+    printEnvironmentNode(root->rightenv);
+    printf("}");
+  }
+  else
+  {
+    printf("(NIL)");
+  }
+}

@@ -23,11 +23,4 @@ struct compNode
   union Data* d;
 };
 
-struct environment
-{
-  char* name;
-  struct compNode* expression;
-  struct environment* next;
-};
-
 #endif
