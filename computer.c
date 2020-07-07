@@ -42,6 +42,7 @@ float evalCompNode(struct compNode* node, struct environmentNode* env)
         struct environmentNode* envNode = getEnvironmentNode(env, node->d->varName);
         if(envNode)
         {
+          printf("looking for %s in env.\n", node->d->varName);
           return evalCompNode(envNode->expression, env);
         }
         printf("NOTIFICATION: varName: %s : not declared w/ value.\n", node->d->varName);
@@ -65,14 +66,6 @@ int main()
   struct compNode *right = makeCompNode(NUM, NULL, NULL, rightD);
 
   struct compNode *mid = makeCompNode(EXP, left, right, NULL);
-  
-  //         ++ ---------
-  //         00 000000000
-  //         10.123456789
-  // double x = 29.33333333;
-  // mod doesn't work on non integers
-  // how to change float to charnode* is mystery so far;
-  // printf("%f mod 10: " x, x % 10);
 
   char* leftStr = compNodeToString(left);
   printf("left node is: %s\n", leftStr);
@@ -86,7 +79,7 @@ int main()
   printf("mid eval is: %.3e\n", evalCompNode(mid, NULL));
 
   union Data* topData = malloc(sizeof(union Data));
-  topData->varName = "abc";
+  topData->varName = "x";
   struct compNode* top_r = makeCompNode(VAR, NULL, NULL, topData);
 
   struct compNode* top = makeCompNode(SUB, mid, top_r, NULL); 
@@ -97,8 +90,8 @@ int main()
   struct environmentNode* temp2 = makeEnvironmentNode("oh no", NULL);
   temp = placeEnvironmentNode(temp, temp2);
   union Data* abcData = malloc(sizeof(union Data));
-  abcData->num = 12.3; 
-  temp = placeEnvironmentNode(temp, makeEnvironmentNode("abc", makeCompNode(NUM, NULL, NULL, abcData)));
+  abcData->varName = "x"; 
+  temp = placeEnvironmentNode(temp, makeEnvironmentNode("x", makeCompNode(VAR, NULL, NULL, abcData)));
   printEnvironmentNode(temp);
   
   printf("\n");
