@@ -10,4 +10,5 @@ struct compNode* makeCompNode(
     struct compNode* r,
     union Data* d);
 char* compNodeToString(struct compNode* node);
+void freeCompNode(struct compNode* root);
 #endif

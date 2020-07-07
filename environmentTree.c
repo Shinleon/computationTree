@@ -44,6 +44,7 @@ struct environmentNode* placeEnvironmentNode(
     int rightheight = root->rightenv ? root->rightenv->height : -1;
     root->height = 1 + MAX(leftheight, rightheight);
 
+    // Want to make sure the tree is balanced.
     // AVL operations go here, to balance tree, using leftheight and rightheight
 
     return root;
@@ -88,4 +89,16 @@ struct environmentNode* getEnvironmentNode(struct environmentNode* root, char* s
     }
   }
   return NULL;
+}
+
+void freeEnvirontmentNode(struct environmentNode* root)
+{
+  if(root)
+  {
+    freeEnvirontmentNode(root->leftenv);
+    freeEnvirontmentNode(root->rightenv);
+    freeCompNode(root->expression);
+    // free(root->varName);
+    free(root);
+  }
 }

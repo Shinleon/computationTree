@@ -86,3 +86,14 @@ char* compNodeToString(struct compNode* node)
   freeCharnodeList(temp);
   return ret;
 }
+
+void freeCompNode(struct compNode* root)
+{
+  if(root)
+  {
+    freeCompNode(root->left);
+    freeCompNode(root->right);
+    free(root->d);
+    free(root);
+  }
+}

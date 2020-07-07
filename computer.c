@@ -6,11 +6,12 @@
 #include "compNodeUtils.h"
 #include "environment.h"
 #include "environmentTree.h"
+#include "wordnode.h"
 
 // appropriate gcc call //
-// gcc -std=c11 -Wall -g -o test computer.c compNodeUtils.c charnode.c environmentTree.c -lm
+// gcc -std=c11 -Wall -g -o test computer.c compNodeUtils.c charnode.c environmentTree.c wordnode.c -lm
 
-float evalCompNode(struct compNode* node, struct environmentNode* env)
+float evalCompNode(struct compNode* node, struct environmentNode* env, struct wordnode* dependencies)
 {
   if (node)
   {
@@ -19,17 +20,24 @@ float evalCompNode(struct compNode* node, struct environmentNode* env)
     case EXP:
       // could do original implementation, but also, computing log numerically...
       // https://stackoverflow.com/questions/1375953/how-to-calculate-an-arbitrary-power-root
-      return (float)pow((double) evalCompNode(node->left, env),
-                        (double) evalCompNode(node->right, env));
+      return (float)pow((double) evalCompNode(node->left, env, dependencies),
+                        (double) evalCompNode(node->right, env, dependencies));
       // return 0;
     case MUL:
-      return evalCompNode(node->left, env) * evalCompNode(node->right, env);
-    case QUO:
-      return evalCompNode(node->left, env) / evalCompNode(node->right, env);
+      return evalCompNode(node->left, env, dependencies) * evalCompNode(node->right, env, dependencies);
+    case QUO:{
+        float divisor = evalCompNode(node->right, env, dependencies);
+        if(divisor != 0)
+        {
+          return evalCompNode(node->left, env, dependencies) / divisor;
+        }
+        printf("Division by zero in expression; evaluated to FLT_MAX;\n");
+        return __FLT_MAX__;
+      }
     case SUB:
-      return evalCompNode(node->left, env) - evalCompNode(node->right, env);
+      return evalCompNode(node->left, env, dependencies) - evalCompNode(node->right, env, dependencies);
     case ADD:
-      return evalCompNode(node->left, env) + evalCompNode(node->right, env);
+      return evalCompNode(node->left, env, dependencies) + evalCompNode(node->right, env, dependencies);
     case VAR: 
       {
         // need to make environment aka, envirTree 
@@ -39,14 +47,32 @@ float evalCompNode(struct compNode* node, struct environmentNode* env)
         // search environment Tree for node's varName // [ADD env as parameter]
         // get it as varEnvNode;
         // return evalCompNode(varEnvNode->expression)
+        //#//  printf("looking for %s in env.\n", node->d->varName);
         struct environmentNode* envNode = getEnvironmentNode(env, node->d->varName);
-        if(envNode)
+        if(!envNode)
         {
-          printf("looking for %s in env.\n", node->d->varName);
-          return evalCompNode(envNode->expression, env);
+          printf("NOTIFICATION: variable: %s : not declared w/ value.\n", node->d->varName);
+          return 0;
         }
-        printf("NOTIFICATION: varName: %s : not declared w/ value.\n", node->d->varName);
-        return 0;
+        // node->d->varName contains a name
+        // envNode->expression contains the compNode 
+        // that must be checked for recursive definitions
+        //#// printf("WordList before addition of current var; ");
+        //#// printWordnode(dependencies);
+        struct wordnode* wordfound = inWordnodeList(dependencies, node->d->varName);
+        if(wordfound)
+        {
+          printf("ERROR: recursively defined variable: %s,\n\tSetting it to zero(0)\n", node->d->varName);
+          return 0;
+        }
+        dependencies = linearInsert(dependencies, makeWordnode(node->d->varName));
+        //#// printf("WordList after addition of current var; ");
+        float ret = evalCompNode(envNode->expression, env, dependencies);
+        
+        //have to remove dependency so other branches won't see this branch's dependencies
+        dependencies = removeWordNode(dependencies, node->d->varName);
+
+        return ret;
       }
     case NUM:
       return node->d->num;
@@ -57,54 +83,76 @@ float evalCompNode(struct compNode* node, struct environmentNode* env)
 
 int main()
 {
-  union Data *leftD = malloc(sizeof(union Data));
-  (*leftD).num = 4.25;
-  struct compNode *left = makeCompNode(NUM, NULL, NULL, leftD);
+  printf("start\n");
+  // make expression "2.5 + x"
+  union Data* topleftD = malloc(sizeof(union Data));
+  topleftD->num = 2.5;
+  union Data* toprightD = malloc(sizeof(union Data));
+  toprightD->varName = "x";
+  struct compNode* top = makeCompNode(
+    ADD, 
+    makeCompNode(NUM, NULL, NULL, topleftD),
+    makeCompNode(VAR, NULL, NULL, toprightD), 
+    NULL);
 
-  union Data *rightD = malloc(sizeof(union Data));
-  (*rightD).num = 2;
-  struct compNode *right = makeCompNode(NUM, NULL, NULL, rightD);
+  char* temp = compNodeToString(top);
+  printf("made top: %s\n", temp);
+  free(temp); 
 
-  struct compNode *mid = makeCompNode(EXP, left, right, NULL);
+  // define x as "y - z"
+  union Data* yleftD = malloc(sizeof(union Data));
+  yleftD->varName = "y";
+  union Data* zrightD = malloc(sizeof(union Data));
+  zrightD->varName = "z";
+  struct compNode* xDef = makeCompNode(
+    SUB,
+    makeCompNode(VAR, NULL, NULL, yleftD),
+    makeCompNode(VAR, NULL, NULL, zrightD),
+    NULL
+  );
+  temp = compNodeToString(xDef);
+  printf("made x: %s\n", temp);
+  free(temp);
 
-  char* leftStr = compNodeToString(left);
-  printf("left node is: %s\n", leftStr);
-  free(leftStr);
-  char* rightStr = compNodeToString(right);
-  printf("right node is: %s\n", rightStr);
-  free(rightStr);
-  char* midStr = compNodeToString(mid);
-  printf("mid node is %s\n", midStr);
-  free(midStr);
-  printf("mid eval is: %.3e\n", evalCompNode(mid, NULL));
+  // define y as "2 * z"
+  union Data* yzleftD = malloc(sizeof(union Data));
+  yzleftD->num = 2;
+  union Data* yzrightD = malloc(sizeof(union Data));
+  yzrightD->varName = "z";
+  struct compNode* yDef = makeCompNode(
+    MUL,
+    makeCompNode(NUM, NULL, NULL, yzleftD),
+    makeCompNode(VAR, NULL, NULL, yzrightD),
+    NULL
+  );
+  temp = compNodeToString(yDef);
+  printf("made y: %s\n", temp );
+  free(temp);
 
-  union Data* topData = malloc(sizeof(union Data));
-  topData->varName = "x";
-  struct compNode* top_r = makeCompNode(VAR, NULL, NULL, topData);
+  //define z as "4"
+  union Data* zData = malloc(sizeof(union Data));
+  zData->num = 3;
+  struct compNode* zDef = makeCompNode(
+    NUM,
+    NULL,
+    NULL,
+    zData
+  );
+  temp = compNodeToString(zDef);
+  printf("made z: %s\n", temp);
+  free(temp);
 
-  struct compNode* top = makeCompNode(SUB, mid, top_r, NULL); 
+  struct environmentNode* env = makeEnvironmentNode("x", xDef);
+  env = placeEnvironmentNode(env, makeEnvironmentNode("y", yDef));
+  env = placeEnvironmentNode(env, makeEnvironmentNode("z", zDef));
 
-  // EnvironmentNode tests. 
-  struct environmentNode* temp = makeEnvironmentNode("hello", NULL);
-  temp = placeEnvironmentNode(NULL, temp);
-  struct environmentNode* temp2 = makeEnvironmentNode("oh no", NULL);
-  temp = placeEnvironmentNode(temp, temp2);
-  union Data* abcData = malloc(sizeof(union Data));
-  abcData->varName = "x"; 
-  temp = placeEnvironmentNode(temp, makeEnvironmentNode("x", makeCompNode(VAR, NULL, NULL, abcData)));
-  printEnvironmentNode(temp);
-  
-  printf("\n");
+  printEnvironmentNode(env);
 
-  char* topNodeStr = compNodeToString(top);
-  printf("top node: %s\n", topNodeStr);
-  free(topNodeStr);
-  printf("top eval is: %.3e\n", evalCompNode(top, temp));
+  float f = evalCompNode(top, env, NULL);
+  char* topString = compNodeToString(top);
+  printf("\nEvaluation of %s using env above is %.3e.\n", topString, f);
+  free(topString);
 
-  // Not sure I care about freeing variables during testing
-  // free(leftD);
-  // free(left);
-  // free(rightD);
-  // free(right);
-  // free(mid);
+  freeEnvirontmentNode(env);
+  freeCompNode(top);
 }
