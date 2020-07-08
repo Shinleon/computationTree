@@ -7,6 +7,7 @@
 
 int isoperator(char c);
 
+
 int main()
 {
   int active = 1;
@@ -22,12 +23,33 @@ int main()
     for(int i = 0; i < strlen(input); i++)
     {
       char c = input[i];
-      prevdigit += isdigit(c);
-      if(isoperator(c) && prevoperator){
-      printf("invalid character squence: %s", input);
-      i = strlen(input);
+      if(isdigit(c) || c == '.')
+      {
+        prevoperator = 0;
+        prevdigit += 1;
+      }
+      if(isoperator(c))
+      {
+        printf("digit := ");
+        for(int j = i - prevdigit; j < i; j++)
+        {
+          printf("%c", input[j]);
+        }
+        printf("\n");
+        prevdigit = 0;
+        if(prevoperator)
+        {
+          printf("invalid character squence: %s\n", input);
+          i = strlen(input);
+        }
+        prevoperator = 1;
       }
     }
+    for(int j = strlen(input) - prevdigit; j < strlen(input); j++)
+    {
+      printf("%c", input[j]);
+    }
+    printf("\n");
     free(input);
   }
 }
