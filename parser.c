@@ -4,8 +4,11 @@
 #include <ctype.h>
 
 #include "charnode.h"
+#include "compNodeDef.h"
+#include "compNodeUtils.h"
 
 int isoperator(char c);
+int parsingrecursion(char* input, int index, struct compNode* root, int depth);
 
 
 int main()
@@ -35,7 +38,7 @@ int main()
         {
           printf("%c", input[j]);
         }
-        printf("\n");
+        printf("\noperator: %c\n", input[i]);
         prevdigit = 0;
         if(prevoperator)
         {
@@ -50,6 +53,7 @@ int main()
       printf("%c", input[j]);
     }
     printf("\n");
+    parsingrecursion(input, 0, NULL, 0);
     free(input);
   }
 }
@@ -57,4 +61,28 @@ int main()
 int isoperator(char c)
 {
   return c == '+' || c == '^' || c == '/' || c == '*';
+}
+
+int parsingrecursion(char* input, int index, struct compNode* root, int depth)
+{
+  int i = index;
+  for(; i < strlen(input); i++)
+  {
+    for(int je = 0; je < depth; je++)
+    {
+      printf("==");
+    }
+    printf("%s\n", input+i);
+    if(input[i] == '(')
+    {
+      i = parsingrecursion(input, i+1, root, depth+1);
+      printf("[%d]", i);
+    }
+    else if(input[i] == ')')
+    {
+      return i;
+    }
+  }
+  printf("{%d}", i);
+  return strlen(input);
 }
