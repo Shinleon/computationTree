@@ -31,7 +31,7 @@ float evalCompNode(struct compNode* node, struct environmentNode* env, struct wo
         {
           return evalCompNode(node->left, env, dependencies) / divisor;
         }
-        printf("Division by zero in expression; evaluated to FLT_MAX;\n");
+        printf("Division by zero detected in expression; evaluated to FLT_MAX;\n");
         return __FLT_MAX__;
       }
     case SUB:
