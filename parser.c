@@ -9,7 +9,7 @@
 
 int isoperator(char c);
 int parsingrecursion(char* input, int index, struct compNode* root, int depth);
-
+int parenthesisCheck(char* input);
 
 int main()
 {
@@ -20,6 +20,7 @@ int main()
     char* input = wordFromScan();
     active = strcmp(input, "quit");
     printf("This is the string you gave: %d : '%s'\n", active, input);
+    printf("This is the paren check: %d :\n", parenthesisCheck(input));
 
     int prevdigit = 0;
     int prevoperator = 1;
@@ -85,4 +86,18 @@ int parsingrecursion(char* input, int index, struct compNode* root, int depth)
   }
   printf("{%d}", i);
   return strlen(input);
+}
+
+int parenthesisCheck(char* input)
+{
+  int ret = 0;
+  for(int i = 0; i <strlen(input); i++)
+  {
+    ret += (input[i] == '(') ? 1 : (input[i] == ')'? -1 : 0);
+    if(ret < 0)
+    {
+      return 0;
+    }
+  }
+  return ret == 0;
 }
