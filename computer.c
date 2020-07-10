@@ -64,7 +64,7 @@ float evalCompNode(struct compNode* node, struct environmentNode* env, struct wo
         {
           printf("ERROR: recursively defined variable: '%s' : ", node->d->varName);
           printWordnode(dependencies);
-          printf("\n\tSetting it to zero(0)\n", node->d->varName);
+          printf("\n\tSetting it(%s)to zero(0)\n", node->d->varName);
           return 0;
         }
         dependencies = linearInsert(dependencies, makeWordnode(node->d->varName));
@@ -133,7 +133,7 @@ int main()
 
   //define z as "4"
   union Data* zData = malloc(sizeof(union Data));
-  zData->num = 3;
+  zData->num = 2.4;
   struct compNode* zDef = makeCompNode(
     NUM,
     NULL,
@@ -149,6 +149,7 @@ int main()
   env = placeEnvironmentNode(env, makeEnvironmentNode("z", zDef));
 
   printEnvironmentNode(env);
+  printf("\n");
 
   float f = evalCompNode(top, env, NULL);
   char* topString = compNodeToString(top);
