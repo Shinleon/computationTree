@@ -14,6 +14,9 @@ int parsingrecursion(char* input, int index, struct compNode* root, int depth);
 int parenthesisCheck(char* input);
 int isValidVarChar(char prevchar);
 
+
+struct compNode* smallparse(char* input, int* index, char prev, struct compNode* prevOperator);
+
 int main()
 {
   int active = 1;
@@ -58,6 +61,12 @@ int main()
     }
     printf("\n");
     parsingrecursion(input, 0, NULL, 0);
+    int* x = malloc(sizeof(int));
+    *x = 0;
+    printf("\n\nsmall recursion\n");
+    struct compNode* temp = smallparse(input, x, '\0', NULL);
+    char* x_ = compNodeToString(temp);
+    printf("%s", x_);
     free(input);
   }
 }
@@ -138,7 +147,7 @@ int parenthesisCheck(char* input)
   }
   return ret == 0;
 }
-
+/*
 struct compNode* temporaryFunctionName(char* input, int* index, char prev)
 {
   char prevchar = '\0';
@@ -216,15 +225,65 @@ struct compNode* temporaryFunctionName(char* input, int* index, char prev)
  errorMark:
   return NULL;
 }
+*/
 
 // default: int* index points to a 0
 //          prev = '\0'
+//          prevOperator = NULL
+
+/*so you need to look at this operator and
+   also the node holding the prevOperator
+   for 32+4*5^6/4
+   if tree is
+     +
+    /
+   32
+   prevOperator should point to the PLUS
+   temp should point to {4}
+   and tree should be established as 
+      +
+     / \
+    32  4
+   however, when the multiplication symbol is seen
+   it should look at the pervOperator and evaluate using ((oper)+1)/2
+   if it is lower, it should take the position of the right subtree and take
+   the current right subtree as it's left subtree
+   making the tree
+     +
+    / \
+   32  *
+      /
+     4
+   now the 5 is seen and placed to prevOperator's right subtree,
+     +
+    / \
+   32  *
+      / \
+     4   5
+   the power is seen ; prevOperator is now POw
+     +
+    / \
+   32  *
+      / \
+     4   ^
+        /
+       5
+   now the 6 is seen ; preOperator is still POW
+     +
+    / \
+   32  *
+      / \
+     4   ^
+        / \
+       5   6
+*/
+
 struct compNode* smallparse(char* input, int* index, char prev, struct compNode* prevOperator)
 {
-  struct compNode* ret = NULL;
   float construct = 0;
-  for(; *index < strlen(input); *index++)
+  for(; *index < strlen(input); (*index)++)
   {
+    printf("%c, %c\n", prev, input[*index]);
     if(prev == '\0')
     {
       if(isdigit(input[*index]))
@@ -248,62 +307,77 @@ struct compNode* smallparse(char* input, int* index, char prev, struct compNode*
         d->num = construct;
         struct compNode* temp = makeCompNode(NUM, NULL, NULL, d);
         construct = 0;
-
-        /*so you need to look at this operator and
-           also the node holding the prevOperator
-           for 32+4*5^6/4
-           if tree is
-             +
-            /
-           32
-           prevOperator should point to the PLUS
-           temp should point to {4}
-           and tree should be established as 
-              +
-             / \
-            32  4
-           however, when the multiplication symbol is seen
-           it should look at the pervOperator and evaluate using ((oper)+1)/2
-           if it is lower, it should take the position of the right subtree and take
-           the current right subtree as it's left subtree
-           making the tree
-             +
-            / \
-           32  *
-              /
-             4
-           now the 5 is seen and placed to prevOperator's right subtree,
-             +
-            / \
-           32  *
-              / \
-             4   5
-           the power is seen ; prevOperator is now POw
-             +
-            / \
-           32  *
-              / \
-             4   ^
-                /
-               5
-           now the 6 is seen ; preOperator is still POW
-             +
-            / \
-           32  *
-              / \
-             4   ^
-                / \
-               5   6
-
-
-        */
-
+        struct compNode* top = NULL; //holds the operator
+        switch(input[*index])
+        {
+          case '^':
+          top = makeCompNode(EXP, NULL, NULL, NULL);
+          break;
+          case '*':
+          top = makeCompNode(MUL, NULL, NULL, NULL);
+          break;
+          case '/':
+          top = makeCompNode(QUO, NULL, NULL, NULL);
+          break;
+          case '+':
+          top = makeCompNode(ADD, NULL, NULL, NULL);
+          break;
+          case '-':
+          top = makeCompNode(SUB, NULL, NULL, NULL);
+          break;
+        }
+        if(!prevOperator) 
+        {
+          top->left = temp;
+          prevOperator = top;
+        }
+        else if ((prevOperator->oper + 1)/2 > (top->oper + 1)/2)  
+        //previous operation has lower precedence or equal
+        {
+          top->left = temp;
+          prevOperator->right = top;
+          *index += 1;
+          top->right = smallparse(input, index, input[*index-1], top); 
+        }
+        else
+        {
+          prevOperator->right = temp;
+          *index -= 1;
+          return prevOperator;
+        }
       }
       else 
       {
         printf("Invalid expression: %s\n", input);
       }
     }
-    prev = input[i];
+    else if(isoperator(prev))
+    {
+      if(isdigit(input[*index]))
+      {
+        construct = construct * 10 + input[*index] - zero_char;
+      }
+      else 
+      {
+        printf("Invalid expression: %s\n", input);
+      }
+    }
+    else
+    {
+      printf("Invalid expression: %s\n", input);
+    }
+    prev = input[*index];
   }
+
+  if(isdigit(prev))
+  {
+    union Data* d = malloc(sizeof(union Data));
+    d->num = construct;
+    struct compNode* temp = makeCompNode(NUM, NULL, NULL, d);
+    prevOperator->right = temp;        
+  }
+  return prevOperator;
 }
+
+
+
