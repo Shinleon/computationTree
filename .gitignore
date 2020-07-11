@@ -1,6 +1,4 @@
 test
 settings.json
 double_float_bit_exploration.cpp
-floattest
-parsetest
-comptest
+*test

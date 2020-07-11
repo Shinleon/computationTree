@@ -7,7 +7,7 @@
 #include "compNodeDef.h"
 #include "compNodeUtils.h"
 
-#define zero_char 48
+#include "constants.h"
 
 int isoperator(char c);
 int parsingrecursion(char* input, int index, struct compNode* root, int depth);

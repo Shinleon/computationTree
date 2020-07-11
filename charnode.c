@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define zero_char 48
+#include "constants.h"
 
 typedef struct charnode {
   char data;
