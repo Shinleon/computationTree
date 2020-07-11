@@ -11,4 +11,10 @@ struct parseList
   struct parseLise* end;
 };
 
+struct tempList
+{
+  struct charnode* holding;
+  struct tempList* next;
+}
+
 #endif

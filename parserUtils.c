@@ -19,7 +19,15 @@ struct parseList* append (struct parseList* head, struct parseList* toAppend)
   return toAppend;
 }
 
-struct parseList* makeParseList(char* input)
+struct parseList* makeParseList1(char* input)
+{
+  struct charnode* charlist = strToCharlist(input);
+  struct tempList* holding = NULL;
+
+  
+}
+
+struct parseList* makeParseList0(char* input)
 {
   char prev = '\0';
   float construct = 0;
