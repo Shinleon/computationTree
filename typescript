@@ -318,4 +318,96 @@ Script started on 2020-07-12 13:56:32-07:00 [TERM="xterm-256color" TTY="/dev/pts
 '3.200e+01' -> '(-)' -> '4.000e+00' -> '(*)' -> '((5.000e+00^_Var)^2.000e+00)' -> '(-)' -> '(5.000e+00-(0.000e+00-2.000e+00))' -> '(-)' -> '7.200e+00' -> '(*)' -> 'temp' -> (NIL)
 ==73630== Conditional jump or move depends on uninitialised value(s)
 ==73630==    at 0x109C26: compressParseList_MUL (parserUtils.c:350)
-==73630==   
+==73630==    by 0x109F00: main (parserUtils.c:430)
+==73630== 
+==73630== Conditional jump or move depends on uninitialised value(s)
+==73630==    at 0x109C7A: compressParseList_MUL (parserUtils.c:347)
+==73630==    by 0x109F00: main (parserUtils.c:430)
+==73630== 
+'3.200e+01' -> '(-)' -> '(4.000e+00*((5.000e+00^_Var)^2.000e+00))' -> '(-)' -> '(5.000e+00-(0.000e+00-2.000e+00))' -> '(-)' -> '(7.200e+00*temp)' -> (NIL)
+==73630== Conditional jump or move depends on uninitialised value(s)
+==73630==    at 0x109CA3: compressParseList_ADD (parserUtils.c:367)
+==73630==    by 0x109F22: main (parserUtils.c:433)
+==73630== 
+==73630== Conditional jump or move depends on uninitialised value(s)
+==73630==    at 0x109CF7: compressParseList_ADD (parserUtils.c:364)
+==73630==    by 0x109F22: main (parserUtils.c:433)
+==73630== 
+==73630== Conditional jump or move depends on uninitialised value(s)
+==73630==    at 0x109A4F: printParseList (parserUtils.c:253)
+==73630==    by 0x109AEA: printParseList (parserUtils.c:268)
+==73630==    by 0x109F2E: main (parserUtils.c:434)
+==73630== 
+'(((3.200e+01-(4.000e+00*((5.000e+00^_Var)^2.000e+00)))-(5.000e+00-(0.000e+00-2.000e+00)))-(7.200e+00*temp))' -> (NIL)
+==73630== Conditional jump or move depends on uninitialised value(s)
+==73630==    at 0x109B7D: validateParseList (parserUtils.c:279)
+==73630==    by 0x109F44: main (parserUtils.c:436)
+==73630== 
+1
+==73630== 
+==73630== HEAP SUMMARY:
+==73630==     in use at exit: 378 bytes in 25 blocks
+==73630==   total heap usage: 719 allocs, 694 frees, 12,529 bytes allocated
+==73630== 
+==73630== LEAK SUMMARY:
+==73630==    definitely lost: 26 bytes in 3 blocks
+==73630==    indirectly lost: 352 bytes in 22 blocks
+==73630==      possibly lost: 0 bytes in 0 blocks
+==73630==    still reachable: 0 bytes in 0 blocks
+==73630==         suppressed: 0 bytes in 0 blocks
+==73630== Rerun with --leak-check=full to see details of leaked memory
+==73630== 
+==73630== Use --track-origins=yes to see where uninitialised values come from
+==73630== For lists of detected and suppressed errors, rerun with: -s
+==73630== ERROR SUMMARY: 38 errors from 22 contexts (suppressed: 0 from 0)
+]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ [K]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ valgrind ./parsertest -s[K[K]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ valgrind ./parsertest[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Kgit add .
+]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ git commit -m "parsing tree made; a[Kvery sloppy and needs to be cleaned uplist[K[K[K[K[1P[1P[C[1P[1P[1@l[1@i[1@s[1@t[C[1@ [C[C[C[C[C[1@n[1@a[1@ [1@d[1P[1P[1P[1P[1@ [1@a[1@n[1@d[1@ [1@c[1@o[1@m[1@p[1@l[1@e[1@t[1@e[1@d[1@ [1P[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C,[K and refactored"
+[trial1 9ed048b] parsing list  made and completed; very sloppy and needs to be cleaned up and refactored
+ 4 files changed, 631 insertions(+), 25 deletions(-)
+ create mode 100644 typescript
+]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ git push
+fatal: The current branch trial1 has no upstream branch.
+To push the current branch and set the remote as upstream, use
+
+    git push --set-upstream origin trial1
+
+]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ git push --set-upstream origin trial1
+Enumerating objects: 20, done.
+Counting objects:   5% (1/20)Counting objects:  10% (2/20)Counting objects:  15% (3/20)Counting objects:  20% (4/20)Counting objects:  25% (5/20)Counting objects:  30% (6/20)Counting objects:  35% (7/20)Counting objects:  40% (8/20)Counting objects:  45% (9/20)Counting objects:  50% (10/20)Counting objects:  55% (11/20)Counting objects:  60% (12/20)Counting objects:  65% (13/20)Counting objects:  70% (14/20)Counting objects:  75% (15/20)Counting objects:  80% (16/20)Counting objects:  85% (17/20)Counting objects:  90% (18/20)Counting objects:  95% (19/20)Counting objects: 100% (20/20)Counting objects: 100% (20/20), done.
+Delta compression using up to 8 threads
+Compressing objects:   6% (1/15)Compressing objects:  13% (2/15)Compressing objects:  20% (3/15)Compressing objects:  26% (4/15)Compressing objects:  33% (5/15)Compressing objects:  40% (6/15)Compressing objects:  46% (7/15)Compressing objects:  53% (8/15)Compressing objects:  60% (9/15)Compressing objects:  66% (10/15)Compressing objects:  73% (11/15)Compressing objects:  80% (12/15)Compressing objects:  86% (13/15)Compressing objects:  93% (14/15)Compressing objects: 100% (15/15)Compressing objects: 100% (15/15), done.
+Writing objects:   6% (1/15)Writing objects:  13% (2/15)Writing objects:  20% (3/15)Writing objects:  26% (4/15)Writing objects:  33% (5/15)Writing objects:  40% (6/15)Writing objects:  46% (7/15)Writing objects:  53% (8/15)Writing objects:  60% (9/15)Writing objects:  66% (10/15)Writing objects:  73% (11/15)Writing objects:  80% (12/15)Writing objects:  86% (13/15)Writing objects:  93% (14/15)Writing objects: 100% (15/15)Writing objects: 100% (15/15), 13.34 KiB | 4.45 MiB/s, done.
+Total 15 (delta 8), reused 0 (delta 0)
+remote: Resolving deltas:   0% (0/8)[Kremote: Resolving deltas:  25% (2/8)[Kremote: Resolving deltas:  62% (5/8)[Kremote: Resolving deltas:  75% (6/8)[Kremote: Resolving deltas:  87% (7/8)[Kremote: Resolving deltas: 100% (8/8)[Kremote: Resolving deltas: 100% (8/8), completed with 4 local objects.[K
+remote: This repository moved. Please use the new location:[K
+remote:   https://github.com/Shinleon/computationTree.git[K
+remote: 
+remote: Create a pull request for 'trial1' on GitHub by visiting:[K
+remote:      https://github.com/Shinleon/computationTree/pull/new/trial1[K
+remote: 
+To https://github.com/shinleon/computationTree.git
+ * [new branch]      trial1 -> trial1
+Branch 'trial1' set up to track remote branch 'trial1' from 'origin'.
+]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ git branch
+[?1h=  master[m[m
+* [32mtrial1[m[m
+[K[?1l>]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ git [K[K[K[Kgit log
+[?1h=[33mcommit 9ed048b526dd745a63b29032af4cf68fbb5c2844[m[33m ([m[1;36mHEAD -> [m[1;32mtrial1[m[33m, [m[1;31morigin/trial1[m[33m)[m[m
+Author: shinleon <shinleon@uw.edu>[m
+Date:   Sun Jul 12 14:32:16 2020 -0700[m
+[m
+    parsing list  made and completed; very sloppy and needs to be cleaned up and refactored[m
+[m
+[33mcommit f657d5e222f5760244944420777f1c9ae56764ce[m[m
+Author: shinleon <shinleon@uw.edu>[m
+Date:   Sat Jul 11 22:11:00 2020 -0700[m
+[m
+    made changes and realized parsing parens is like branch merging pt 2 cause i didn't save[m
+[m
+[33mcommit 39801b83bae72b121fff4a416865e27f15b3ff49[m[m
+Author: shinleon <shinleon@uw.edu>[m
+Date:   Sat Jul 11 22:10:37 2020 -0700[m
+[m
+    made changes and realized parsing parens is like branch merging[m
+[m
+[33mcommit 61077ea75dc5ae4f4b7fe31bacf4cd3516ea6acb[m[33m ([m[1;31morigin/master[m[33m,
