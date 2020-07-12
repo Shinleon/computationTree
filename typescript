@@ -410,4 +410,44 @@ Date:   Sat Jul 11 22:10:37 2020 -0700[m
 [m
     made changes and realized parsing parens is like branch merging[m
 [m
-[33mcommit 61077ea75dc5ae4f4b7fe31bacf4cd3516ea6acb[m[33m ([m[1;31morigin/master[m[33m,
+[33mcommit 61077ea75dc5ae4f4b7fe31bacf4cd3516ea6acb[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m[m
+Author: shinleon <shinleon@uw.edu>[m
+Date:   Sat Jul 11 10:10:29 2020 -0700[m
+[m
+    didn't fully save[m
+[m
+[33mcommit 30f7dffa663370a9bbc4e5321c7e687b5c5b0927[m[m
+Author: shinleon <shinleon@uw.edu>[m
+Date:   Sat Jul 11 10:10:13 2020 -0700[m
+[m
+    committing cause I have the general structure down but I want to branch it so I can easily roll back changes and develop a solution in different ways[m
+[m
+[33mcommit 9d74c1f781e355b1ac448a54b60a35431e28a14a[m[m
+Author: shinleon <shinleon@uw.edu>[m
+Date:   Fri Jul 10 01:48:58 2020 -0700[m
+[m
+:[K[K[K:[K[K:[K[K[7mNo next tag  (press RETURN)[27m[35;1H[K[K:[K[K:[K[K:[K[K[K:[K[K:[K11[K[K:[K[K:[K[K:[K11[K[K:[K[K[?1l>]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ git [K[K[K[Kgit checkout master
+error: Your local changes to the following files would be overwritten by checkout:
+	typescript
+Please commit your changes or stash them before you switch branches.
+Aborting
+]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ cd[K[Kgo gitign[K[K[K[K[K[K.gitignore
+]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ go .gitignore[Kgit add .
+]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ git commit -m "added *sctript[K[K[K[K[Kript to gitignore s [Ko it doen[Ksn't com[Kpy and[Ky o [Kf my scripts
+> "
+[trial1 67f586d] added *script to gitignore so it doesn't copy any of my scripts
+ 2 files changed, 94 insertions(+), 1 deletion(-)
+]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ git c[K[K[K[K[Kclose
+
+Command 'close' not found, did you mean:
+
+  command 'gclose' from deb gnustep-gui-runtime (0.27.0-5build2)
+
+Try: sudo apt install <deb name>
+
+]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ sexit
+sexit: command not found
+]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ exit
+exit
+
+Script done on 2020-07-12 14:39:24-07:00 [COMMAND_EXIT_CODE="127"]
