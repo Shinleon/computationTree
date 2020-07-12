@@ -24,6 +24,7 @@ struct parseList* makeParseList(struct charnode** input, int depth)
     return NULL;
   }
   struct parseList* ret = NULL;
+  struct parseList* attachpoint = NULL;
   struct charnode* temp = *input;
 
   int wasOperator = 1;  //one allows next char to be var or num or paren
