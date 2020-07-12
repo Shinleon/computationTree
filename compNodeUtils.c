@@ -87,13 +87,25 @@ char* compNodeToString(struct compNode* node)
   return ret;
 }
 
+void freeData(union Data* d, enum operations oper)
+{
+  if(d)
+  {
+    if(oper == VAR)
+    {
+      free(d->varName);
+    }
+  free(d);
+  }
+}
+
 void freeCompNode(struct compNode* root)
 {
   if(root)
   {
     freeCompNode(root->left);
     freeCompNode(root->right);
-    free(root->d);
+    freeData(root->d, root->oper);
     free(root);
   }
 }

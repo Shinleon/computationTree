@@ -4,17 +4,18 @@
 #ifndef PARSERDEF_H
 #define PARSERDEF_H
 
-struct parseList
+enum operatorBool
 {
-  struct compNode* compRoot;
-  struct parseList* next;
-  struct parseLise* subParen;
+  OP_TRUE,
+  OP_FALSE
 };
 
-struct tempList
+struct parseList
 {
-  struct charnode* characters;
-  struct tempList* next;
+  enum operatorBool opBool;
+  struct compNode* compRoot;
+  struct parseList* next;
+  struct parseList* subParen;
 };
 
 #endif
