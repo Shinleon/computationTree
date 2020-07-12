@@ -2,129 +2,177 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <math.h> // have to add '-lm' to the end of your gcc call
 
 #include "charnode.h"
 #include "parserDef.h"
 #include "compNodeDef.h"
+#include "compNodeUtils.h"
 #include "constants.h"
 
+// struct parseList* makeParseList(char* input);
+// struct compNode* parseLisToCompTree(struct parseList* lis);
+// void freeParsenode (struct parseList* lis);
 
-struct parseList* append (struct parseList* head, struct parseList* toAppend)
+//method that returns 1 if c is alphabetic or '_'
+// or returns 1 if c is a digit, but charnode* preRet isn't null
+
+struct parseList* makeParseList(struct charnode** input, int depth)
 {
-  if(head)
+  if(!input)
   {
-    head->next = append(head->next, toAppend);
-    return head;
+    return NULL;
   }
-  return toAppend;
-}
-
-struct parseList* makeParseList1(char* input)
-{
-  struct charnode* charlist = strToCharlist(input);
-  struct tempList* holding = NULL;
-
-  
-}
-
-struct parseList* makeParseList0(char* input)
-{
-  char prev = '\0';
-  float construct = 0;
   struct parseList* ret = NULL;
-  for(int i = 0; i < strlen(input); i++)
+  struct charnode* temp = *input;
+
+  int wasOperator = 1;  //one allows next char to be var or num or paren
+  int wasVarNum = 0;    //one allows the next char to be an operator 
+                        //  or closing paren
+  while(temp)
   {
-        return NULL;
-    if(prev == '\0')
+    if(temp->data == ')' && wasVarNum)
     {
-      if(isdigit(input[i]))
+      if(depth == 0)
       {
-        construct = construct * 10 + input[i] - zero_char;
-      }
-      else 
-      {
-        printf("Invalid expression: %s\n", input);
+        printf("fautly expression: too many closing paren.\n");
         return NULL;
       }
+      *input = temp->next;
+      return ret;
     }
-    else if(isdigit(prev))
+    else if (temp->data == '(' && wasOperator)
     {
-      if(isdigit(input[i]))
+      struct parseList* temp = malloc(sizeof(struct parseList));
+      *input = temp->next;
+      temp->subParen = makeParseList(input, depth + 1);
+      if(!temp->subParen)
       {
-        construct = construct * 10 + input[i] - zero_char;
+        // set both flags to false so program aborts as subparen was
+        //   invalid
+        wasVarNum = 0;
+        wasOperator = 0;
       }
-      else if (isoperator(input[i]))
-      {
-        union Data* d = malloc(sizeof(union Data));
-        d->num = construct;
-        struct compNode* number = makeCompNode(NUM, NULL, NULL, d);
-        construct = 0;
-        struct compNode* operator = NULL; //holds the operator
-        switch(input[i])
-        {
-          case '^':
-          operator = makeCompNode(EXP, NULL, NULL, NULL);
-          break;
-          case '*':
-          operator = makeCompNode(MUL, NULL, NULL, NULL);
-          break;
-          case '/':
-          operator = makeCompNode(QUO, NULL, NULL, NULL);
-          break;
-          case '+':
-          operator = makeCompNode(ADD, NULL, NULL, NULL);
-          break;
-          case '-':
-          operator = makeCompNode(SUB, NULL, NULL, NULL);
-          break;
-        }
-        struct parseList* temp = malloc(sizeof(struct parseList));
-        temp->compRoot = number;
-        ret = append(ret, temp);
-        temp = mallo(sizeof(struct parseList));
-        temp->compRoot = operator;
-        ret = append(ret, temp);
-      }
-      else 
-      {
-        printf("Invalid expression: %s\n", input);
-        return NULL;
-      }
+      //input should now point to charnode after matching closing paren;
+      temp = *input;
+      wasOperator = 0;
+      wasVarNum = 1;
     }
-    else if(isoperator(prev))
+    else if(validVarChar(temp->data, NULL) && wasOperator)
     {
-      if(isdigit(input[i]))
-      {
-        construct = construct * 10 + input[i] - zero_char;
-      }
-      else 
-      {
-        printf("Invalid expression: %s\n", input);
-        return NULL;
-      }
+      //do activity for variable name;
+      wasVarNum = 1;
+      wasOperator = 0;
+    }
+    else if ((isdigit(temp->data) || temp->data == '.') && wasOperator)
+    {
+      // do activity for float;
+      wasVarNum = 1;
+      wasOperator = 0;
+    }
+    else if(isOperator(temp->data) && wasVarNum)
+    {
+      //do activity for operator;
+      wasVarNum = 0;
+      wasOperator = 1;
     }
     else
     {
-      printf("Invalid expression: %s\n", input);
-        return NULL;
+      printf("invalid expression syntax; aborting\n");
+      return NULL;
     }
   }
-  if(isdigit(prev))
+  temp = temp->next;
+}
+
+int validVarChar(char c, struct charnode* preRet)
+{
+  int ret = 0;
+  //check between 'A' and 'Z', check between 'a' and 'z', check for '_'
+  if (( c > 64 && c < 91 ) || ( c > 96 && c < 123 ) || c == '_')
   {
-    union Data* d = malloc(sizeof(union Data));
-    d->num = construct;
-    struct compNode* number = makeCompNode(NUM, NULL, NULL, d);
-    struct parseList* temp = malloc(sizeof(struct parseList));
-    temp->compRoot = number;
-    ret = append(ret, temp);
+    ret = 1;
   }
-  else
+  //if varchar has something in it, it can include a digit, it cannot
+  // start with a digit, though.
+  if(preRet && c >= zero_char && c <= zero_char + 9)
   {
-    printf("Invalid expression: %s\n", input);
-      return NULL;
+    ret = 1;
   }
   return ret;
 }
 
-struct compNode* parseLisToCompTree(struct parseList* lis);
-void freeParsenode (struct parseList* lis);
+struct charnode* getNextFloatAsCompNode(struct compNode** result, struct charnode* curr)
+{
+  struct charnode* preRet = NULL;
+  while(curr && (isdigit(curr->data) || curr->data == '.'))
+  {
+    printf("entered loop\n");
+    preRet = append(preRet, makeCharnode(curr->data));
+    printCharnode(preRet);
+    curr = curr->next;
+  }
+  char* temp = charnodeToString(preRet);
+  printf("'%s'\n", temp);
+  float f_temp = strtod(temp, NULL);
+  union Data* d = malloc(sizeof(union Data));
+  d->num = f_temp;
+  *result = makeCompNode(NUM, NULL, NULL, d);
+  freeCharnodeList(preRet);
+  free(temp);
+  return curr;
+}
+
+struct charnode* getNextVarnameAsCompNode(struct compNode** result, struct charnode* curr)
+{
+  struct charnode* preRet = NULL;
+  while(curr && validVarChar(curr->data, preRet))
+  {
+    preRet = append(preRet, makeCharnode(curr->data));
+    curr = curr->next;
+  }
+  char* varName = charnodeToString(preRet);
+  union Data* d = malloc(sizeof(union Data));
+  d->varName = varName;
+  *result = makeCompNode(VAR, NULL, NULL, d);
+  freeCharnodeList(preRet);
+  return curr;
+}
+
+struct charnode* getOperator(struct compNode** result, struct charnode* curr)
+{
+  if(curr->data ==  '^')
+  {
+    *result = makeCompNode(EXP, NULL, NULL, NULL);
+  }
+  else if(curr->data ==  '*')
+  {
+    *result = makeCompNode(MUL, NULL, NULL, NULL);
+  }
+  else if(curr->data ==  '/')
+  {
+    *result = makeCompNode(QUO, NULL, NULL, NULL);
+  }
+  else if(curr->data ==  '+')
+  {
+    *result = makeCompNode(ADD, NULL, NULL, NULL);
+  }
+  else if(curr->data ==  '-')
+  {
+    *result = makeCompNode(SUB, NULL, NULL, NULL);
+  }
+  else 
+  {
+    *result = NULL;
+  }
+  return curr->next;
+}
+
+int main()
+{
+  char* temp = "var/2";
+  char** result = malloc(sizeof(char*));
+  charnode* number = strToCharlist(temp);
+  getNextVarname(result, number);
+  printf("%s\n", *result);
+}

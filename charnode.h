@@ -16,6 +16,8 @@ charnode* append(charnode* head, charnode* toAppend);
 int length(charnode* head);
 char* charnodeToString(charnode* head);
 
+void printCharnode(charnode* head);
+
 /*allows you to scan any quantity of chars :) ;*/
 char* wordFromScan();
 

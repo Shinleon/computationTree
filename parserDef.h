@@ -8,13 +8,13 @@ struct parseList
 {
   struct compNode* compRoot;
   struct parseList* next;
-  struct parseLise* end;
+  struct parseLise* subParen;
 };
 
 struct tempList
 {
-  struct charnode* holding;
+  struct charnode* characters;
   struct tempList* next;
-}
+};
 
 #endif
