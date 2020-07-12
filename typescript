@@ -1,453 +1,0 @@
-Script started on 2020-07-12 13:56:32-07:00 [TERM="xterm-256color" TTY="/dev/pts/2" COLUMNS="191" LINES="40"]
-]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ gc[K[Kcc[K[Kgcc[K[K[Kccompile parsertest parserUtils.c char[K[K[K[Ko[KcompNodeUtils.c charnode.c -lm
-[01m[KparserUtils.c:[m[K In function ‘[01m[KcharnodeToParseList[m[K’:
-[01m[KparserUtils.c:69:21:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kattachpoint[m[K’ [[01;35m[K-Wunused-variable[m[K]
-   69 |   struct parseList* [01;35m[Kattachpoint[m[K = NULL; //append takes n time, but have yet
-      |                     [01;35m[K^~~~~~~~~~~[m[K
-[01m[KparserUtils.c:[m[K In function ‘[01m[KcompressParseList_EXP[m[K’:
-[01m[KparserUtils.c:313:3:[m[K [01;35m[Kwarning: [m[Kmulti-line comment [[01;35m[K-Wcomment[m[K]
-  313 |   [01;35m[K/[m[K/    // \
-      |   [01;35m[K^[m[K
-]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ ./parsertest
-32-4*5^_Var^2-(5-(0-2))-7.2*temp
-'3.200e+01' -> '(-)' -> '4.000e+00' -> '(*)' -> '5.000e+00' -> '(^)' -> '_Var' -> '(^)' -> '2.000e+00' -> '(-)' ->  ( -> '5.000e+00' -> '(-)' ->  ( -> '0.000e+00' -> '(-)' -> '2.000e+00' -> (NIL)  ) -> (NIL)  ) -> '(-)' -> '7.200e+00' -> '(*)' -> 'temp' -> (NIL)
-'3.200e+01' -> '(-)' -> '4.000e+00' -> '(*)' -> '5.000e+00' -> '(^)' -> '_Var' -> '(^)' -> '2.000e+00' -> '(-)' -> '(5.000e+00-(0.000e+00-2.000e+00))' -> '(-)' -> '7.200e+00' -> '(*)' -> 'temp' -> (NIL)
-'3.200e+01' -> '(-)' -> '4.000e+00' -> '(*)' -> '((5.000e+00^_Var)^2.000e+00)' -> '(-)' -> '(5.000e+00-(0.000e+00-2.000e+00))' -> '(-)' -> '7.200e+00' -> '(*)' -> 'temp' -> (NIL)
-'3.200e+01' -> '(-)' -> '(4.000e+00*((5.000e+00^_Var)^2.000e+00))' -> '(-)' -> '(5.000e+00-(0.000e+00-2.000e+00))' -> '(-)' -> '(7.200e+00*temp)' -> (NIL)
-'(((3.200e+01-(4.000e+00*((5.000e+00^_Var)^2.000e+00)))-(5.000e+00-(0.000e+00-2.000e+00)))-(7.200e+00*temp))' -> (NIL)
-1
-]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ valgrind ./parsertest
-==73619== Memcheck, a memory error detector
-==73619== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==73619== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
-==73619== Command: ./parsertest
-==73619== 
-32-4*5^_Var^2-(5-(0-2))-7.2*temp
-==73619== Conditional jump or move depends on uninitialised value(s)
-==73619==    at 0x109337: appendParseList (parserUtils.c:54)
-==73619==    by 0x10934F: appendParseList (parserUtils.c:56)
-==73619==    by 0x1096C2: charnodeToParseList (parserUtils.c:157)
-==73619==    by 0x109E8A: main (parserUtils.c:420)
-==73619== 
-==73619== Conditional jump or move depends on uninitialised value(s)
-==73619==    at 0x109337: appendParseList (parserUtils.c:54)
-==73619==    by 0x10934F: appendParseList (parserUtils.c:56)
-==73619==    by 0x10934F: appendParseList (parserUtils.c:56)
-==73619==    by 0x109611: charnodeToParseList (parserUtils.c:143)
-==73619==    by 0x109E8A: main (parserUtils.c:420)
-==73619== 
-==73619== Conditional jump or move depends on uninitialised value(s)
-==73619==    at 0x109337: appendParseList (parserUtils.c:54)
-==73619==    by 0x10934F: appendParseList (parserUtils.c:56)
-==73619==    by 0x10934F: appendParseList (parserUtils.c:56)
-==73619==    by 0x10934F: appendParseList (parserUtils.c:56)
-==73619==    by 0x1096C2: charnodeToParseList (parserUtils.c:157)
-==73619==    by 0x109E8A: main (parserUtils.c:420)
-==73619== 
-==73619== Conditional jump or move depends on uninitialised value(s)
-==73619==    at 0x109337: appendParseList (parserUtils.c:54)
-==73619==    by 0x10934F: appendParseList (parserUtils.c:56)
-==73619==    by 0x1096C2: charnodeToParseList (parserUtils.c:157)
-==73619==    by 0x10942A: charnodeToParseList (parserUtils.c:99)
-==73619==    by 0x109E8A: main (parserUtils.c:420)
-==73619== 
-==73619== Conditional jump or move depends on uninitialised value(s)
-==73619==    at 0x109337: appendParseList (parserUtils.c:54)
-==73619==    by 0x10934F: appendParseList (parserUtils.c:56)
-==73619==    by 0x10934F: appendParseList (parserUtils.c:56)
-==73619==    by 0x10948C: charnodeToParseList (parserUtils.c:115)
-==73619==    by 0x10942A: charnodeToParseList (parserUtils.c:99)
-==73619==    by 0x109E8A: main (parserUtils.c:420)
-==73619== 
-==73619== Conditional jump or move depends on uninitialised value(s)
-==73619==    at 0x109A4F: printParseList (parserUtils.c:253)
-==73619==    by 0x109AEA: printParseList (parserUtils.c:268)
-==73619==    by 0x109AEA: printParseList (parserUtils.c:268)
-==73619==    by 0x109AEA: printParseList (parserUtils.c:268)
-==73619==    by 0x109AC9: printParseList (parserUtils.c:265)
-==73619==    by 0x109AEA: printParseList (parserUtils.c:268)
-==73619==    by 0x109AEA: printParseList (parserUtils.c:268)
-==73619==    by 0x109AC9: printParseList (parserUtils.c:265)
-==73619==    by 0x109AEA: printParseList (parserUtils.c:268)
-==73619==    by 0x109AEA: printParseList (parserUtils.c:268)
-==73619==    by 0x109AEA: printParseList (parserUtils.c:268)
-==73619==    by 0x109AEA: printParseList (parserUtils.c:268)
-==73619== 
-'3.200e+01' -> '(-)' -> '4.000e+00' -> '(*)' -> '5.000e+00' -> '(^)' -> '_Var' -> '(^)' -> '2.000e+00' -> '(-)' ->  ( -> '5.000e+00' -> '(-)' ->  ( -> '0.000e+00' -> '(-)' -> '2.000e+00' -> (NIL)  ) -> (NIL)  ) -> '(-)' -> '7.200e+00' -> '(*)' -> 'temp' -> (NIL)
-==73619== Conditional jump or move depends on uninitialised value(s)
-==73619==    at 0x109DCC: compressParseList_PAREN (parserUtils.c:391)
-==73619==    by 0x109DED: compressParseList (parserUtils.c:404)
-==73619==    by 0x109DA6: compressParseList_PAREN (parserUtils.c:395)
-==73619==    by 0x109DED: compressParseList (parserUtils.c:404)
-==73619==    by 0x109DA6: compressParseList_PAREN (parserUtils.c:395)
-==73619==    by 0x109EBC: main (parserUtils.c:424)
-==73619== 
-==73619== Conditional jump or move depends on uninitialised value(s)
-==73619==    at 0x109BA9: compressParseList_EXP (parserUtils.c:333)
-==73619==    by 0x109DF9: compressParseList (parserUtils.c:405)
-==73619==    by 0x109DA6: compressParseList_PAREN (parserUtils.c:395)
-==73619==    by 0x109DED: compressParseList (parserUtils.c:404)
-==73619==    by 0x109DA6: compressParseList_PAREN (parserUtils.c:395)
-==73619==    by 0x109EBC: main (parserUtils.c:424)
-==73619== 
-==73619== Conditional jump or move depends on uninitialised value(s)
-==73619==    at 0x109BFD: compressParseList_EXP (parserUtils.c:330)
-==73619==    by 0x109DF9: compressParseList (parserUtils.c:405)
-==73619==    by 0x109DA6: compressParseList_PAREN (parserUtils.c:395)
-==73619==    by 0x109DED: compressParseList (parserUtils.c:404)
-==73619==    by 0x109DA6: compressParseList_PAREN (parserUtils.c:395)
-==73619==    by 0x109EBC: main (parserUtils.c:424)
-==73619== 
-==73619== Conditional jump or move depends on uninitialised value(s)
-==73619==    at 0x109C26: compressParseList_MUL (parserUtils.c:350)
-==73619==    by 0x109E05: compressParseList (parserUtils.c:406)
-==73619==    by 0x109DA6: compressParseList_PAREN (parserUtils.c:395)
-==73619==    by 0x109DED: compressParseList (parserUtils.c:404)
-==73619==    by 0x109DA6: compressParseList_PAREN (parserUtils.c:395)
-==73619==    by 0x109EBC: main (parserUtils.c:424)
-==73619== 
-==73619== Conditional jump or move depends on uninitialised value(s)
-==73619==    at 0x109C7A: compressParseList_MUL (parserUtils.c:347)
-==73619==    by 0x109E05: compressParseList (parserUtils.c:406)
-==73619==    by 0x109DA6: compressParseList_PAREN (parserUtils.c:395)
-==73619==    by 0x109DED: compressParseList (parserUtils.c:404)
-==73619==    by 0x109DA6: compressParseList_PAREN (parserUtils.c:395)
-==73619==    by 0x109EBC: main (parserUtils.c:424)
-==73619== 
-==73619== Conditional jump or move depends on uninitialised value(s)
-==73619==    at 0x109CA3: compressParseList_ADD (parserUtils.c:367)
-==73619==    by 0x109E11: compressParseList (parserUtils.c:407)
-==73619==    by 0x109DA6: compressParseList_PAREN (parserUtils.c:395)
-==73619==    by 0x109DED: compressParseList (parserUtils.c:404)
-==73619==    by 0x109DA6: compressParseList_PAREN (parserUtils.c:395)
-==73619==    by 0x109EBC: main (parserUtils.c:424)
-==73619== 
-==73619== Conditional jump or move depends on uninitialised value(s)
-==73619==    at 0x109CF7: compressParseList_ADD (parserUtils.c:364)
-==73619==    by 0x109E11: compressParseList (parserUtils.c:407)
-==73619==    by 0x109DA6: compressParseList_PAREN (parserUtils.c:395)
-==73619==    by 0x109DED: compressParseList (parserUtils.c:404)
-==73619==    by 0x109DA6: compressParseList_PAREN (parserUtils.c:395)
-==73619==    by 0x109EBC: main (parserUtils.c:424)
-==73619== 
-==73619== Conditional jump or move depends on uninitialised value(s)
-==73619==    at 0x109DCC: compressParseList_PAREN (parserUtils.c:391)
-==73619==    by 0x109EBC: main (parserUtils.c:424)
-==73619== 
-'3.200e+01' -> '(-)' -> '4.000e+00' -> '(*)' -> '5.000e+00' -> '(^)' -> '_Var' -> '(^)' -> '2.000e+00' -> '(-)' -> '(5.000e+00-(0.000e+00-2.000e+00))' -> '(-)' -> '7.200e+00' -> '(*)' -> 'temp' -> (NIL)
-==73619== Conditional jump or move depends on uninitialised value(s)
-==73619==    at 0x109BA9: compressParseList_EXP (parserUtils.c:333)
-==73619==    by 0x109EDE: main (parserUtils.c:427)
-==73619== 
-==73619== Conditional jump or move depends on uninitialised value(s)
-==73619==    at 0x109BFD: compressParseList_EXP (parserUtils.c:330)
-==73619==    by 0x109EDE: main (parserUtils.c:427)
-==73619== 
-'3.200e+01' -> '(-)' -> '4.000e+00' -> '(*)' -> '((5.000e+00^_Var)^2.000e+00)' -> '(-)' -> '(5.000e+00-(0.000e+00-2.000e+00))' -> '(-)' -> '7.200e+00' -> '(*)' -> 'temp' -> (NIL)
-==73619== Conditional jump or move depends on uninitialised value(s)
-==73619==    at 0x109C26: compressParseList_MUL (parserUtils.c:350)
-==73619==    by 0x109F00: main (parserUtils.c:430)
-==73619== 
-==73619== Conditional jump or move depends on uninitialised value(s)
-==73619==    at 0x109C7A: compressParseList_MUL (parserUtils.c:347)
-==73619==    by 0x109F00: main (parserUtils.c:430)
-==73619== 
-'3.200e+01' -> '(-)' -> '(4.000e+00*((5.000e+00^_Var)^2.000e+00))' -> '(-)' -> '(5.000e+00-(0.000e+00-2.000e+00))' -> '(-)' -> '(7.200e+00*temp)' -> (NIL)
-==73619== Conditional jump or move depends on uninitialised value(s)
-==73619==    at 0x109CA3: compressParseList_ADD (parserUtils.c:367)
-==73619==    by 0x109F22: main (parserUtils.c:433)
-==73619== 
-==73619== Conditional jump or move depends on uninitialised value(s)
-==73619==    at 0x109CF7: compressParseList_ADD (parserUtils.c:364)
-==73619==    by 0x109F22: main (parserUtils.c:433)
-==73619== 
-==73619== Conditional jump or move depends on uninitialised value(s)
-==73619==    at 0x109A4F: printParseList (parserUtils.c:253)
-==73619==    by 0x109AEA: printParseList (parserUtils.c:268)
-==73619==    by 0x109F2E: main (parserUtils.c:434)
-==73619== 
-'(((3.200e+01-(4.000e+00*((5.000e+00^_Var)^2.000e+00)))-(5.000e+00-(0.000e+00-2.000e+00)))-(7.200e+00*temp))' -> (NIL)
-==73619== Conditional jump or move depends on uninitialised value(s)
-==73619==    at 0x109B7D: validateParseList (parserUtils.c:279)
-==73619==    by 0x109F44: main (parserUtils.c:436)
-==73619== 
-1
-==73619== 
-==73619== HEAP SUMMARY:
-==73619==     in use at exit: 378 bytes in 25 blocks
-==73619==   total heap usage: 719 allocs, 694 frees, 12,529 bytes allocated
-==73619== 
-==73619== LEAK SUMMARY:
-==73619==    definitely lost: 26 bytes in 3 blocks
-==73619==    indirectly lost: 352 bytes in 22 blocks
-==73619==      possibly lost: 0 bytes in 0 blocks
-==73619==    still reachable: 0 bytes in 0 blocks
-==73619==         suppressed: 0 bytes in 0 blocks
-==73619== Rerun with --leak-check=full to see details of leaked memory
-==73619== 
-==73619== Use --track-origins=yes to see where uninitialised values come from
-==73619== For lists of detected and suppressed errors, rerun with: -s
-==73619== ERROR SUMMARY: 38 errors from 22 contexts (suppressed: 0 from 0)
-]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ valgrind ./parsertest -s
-==73630== Memcheck, a memory error detector
-==73630== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==73630== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
-==73630== Command: ./parsertest -s
-==73630== 
-32-4*5^_Var^2-(5-(0-2))-7.2*temp
-==73630== Conditional jump or move depends on uninitialised value(s)
-==73630==    at 0x109337: appendParseList (parserUtils.c:54)
-==73630==    by 0x10934F: appendParseList (parserUtils.c:56)
-==73630==    by 0x1096C2: charnodeToParseList (parserUtils.c:157)
-==73630==    by 0x109E8A: main (parserUtils.c:420)
-==73630== 
-==73630== Conditional jump or move depends on uninitialised value(s)
-==73630==    at 0x109337: appendParseList (parserUtils.c:54)
-==73630==    by 0x10934F: appendParseList (parserUtils.c:56)
-==73630==    by 0x10934F: appendParseList (parserUtils.c:56)
-==73630==    by 0x109611: charnodeToParseList (parserUtils.c:143)
-==73630==    by 0x109E8A: main (parserUtils.c:420)
-==73630== 
-==73630== Conditional jump or move depends on uninitialised value(s)
-==73630==    at 0x109337: appendParseList (parserUtils.c:54)
-==73630==    by 0x10934F: appendParseList (parserUtils.c:56)
-==73630==    by 0x10934F: appendParseList (parserUtils.c:56)
-==73630==    by 0x10934F: appendParseList (parserUtils.c:56)
-==73630==    by 0x1096C2: charnodeToParseList (parserUtils.c:157)
-==73630==    by 0x109E8A: main (parserUtils.c:420)
-==73630== 
-==73630== Conditional jump or move depends on uninitialised value(s)
-==73630==    at 0x109337: appendParseList (parserUtils.c:54)
-==73630==    by 0x10934F: appendParseList (parserUtils.c:56)
-==73630==    by 0x1096C2: charnodeToParseList (parserUtils.c:157)
-==73630==    by 0x10942A: charnodeToParseList (parserUtils.c:99)
-==73630==    by 0x109E8A: main (parserUtils.c:420)
-==73630== 
-==73630== Conditional jump or move depends on uninitialised value(s)
-==73630==    at 0x109337: appendParseList (parserUtils.c:54)
-==73630==    by 0x10934F: appendParseList (parserUtils.c:56)
-==73630==    by 0x10934F: appendParseList (parserUtils.c:56)
-==73630==    by 0x10948C: charnodeToParseList (parserUtils.c:115)
-==73630==    by 0x10942A: charnodeToParseList (parserUtils.c:99)
-==73630==    by 0x109E8A: main (parserUtils.c:420)
-==73630== 
-==73630== Conditional jump or move depends on uninitialised value(s)
-==73630==    at 0x109A4F: printParseList (parserUtils.c:253)
-==73630==    by 0x109AEA: printParseList (parserUtils.c:268)
-==73630==    by 0x109AEA: printParseList (parserUtils.c:268)
-==73630==    by 0x109AEA: printParseList (parserUtils.c:268)
-==73630==    by 0x109AC9: printParseList (parserUtils.c:265)
-==73630==    by 0x109AEA: printParseList (parserUtils.c:268)
-==73630==    by 0x109AEA: printParseList (parserUtils.c:268)
-==73630==    by 0x109AC9: printParseList (parserUtils.c:265)
-==73630==    by 0x109AEA: printParseList (parserUtils.c:268)
-==73630==    by 0x109AEA: printParseList (parserUtils.c:268)
-==73630==    by 0x109AEA: printParseList (parserUtils.c:268)
-==73630==    by 0x109AEA: printParseList (parserUtils.c:268)
-==73630== 
-'3.200e+01' -> '(-)' -> '4.000e+00' -> '(*)' -> '5.000e+00' -> '(^)' -> '_Var' -> '(^)' -> '2.000e+00' -> '(-)' ->  ( -> '5.000e+00' -> '(-)' ->  ( -> '0.000e+00' -> '(-)' -> '2.000e+00' -> (NIL)  ) -> (NIL)  ) -> '(-)' -> '7.200e+00' -> '(*)' -> 'temp' -> (NIL)
-==73630== Conditional jump or move depends on uninitialised value(s)
-==73630==    at 0x109DCC: compressParseList_PAREN (parserUtils.c:391)
-==73630==    by 0x109DED: compressParseList (parserUtils.c:404)
-==73630==    by 0x109DA6: compressParseList_PAREN (parserUtils.c:395)
-==73630==    by 0x109DED: compressParseList (parserUtils.c:404)
-==73630==    by 0x109DA6: compressParseList_PAREN (parserUtils.c:395)
-==73630==    by 0x109EBC: main (parserUtils.c:424)
-==73630== 
-==73630== Conditional jump or move depends on uninitialised value(s)
-==73630==    at 0x109BA9: compressParseList_EXP (parserUtils.c:333)
-==73630==    by 0x109DF9: compressParseList (parserUtils.c:405)
-==73630==    by 0x109DA6: compressParseList_PAREN (parserUtils.c:395)
-==73630==    by 0x109DED: compressParseList (parserUtils.c:404)
-==73630==    by 0x109DA6: compressParseList_PAREN (parserUtils.c:395)
-==73630==    by 0x109EBC: main (parserUtils.c:424)
-==73630== 
-==73630== Conditional jump or move depends on uninitialised value(s)
-==73630==    at 0x109BFD: compressParseList_EXP (parserUtils.c:330)
-==73630==    by 0x109DF9: compressParseList (parserUtils.c:405)
-==73630==    by 0x109DA6: compressParseList_PAREN (parserUtils.c:395)
-==73630==    by 0x109DED: compressParseList (parserUtils.c:404)
-==73630==    by 0x109DA6: compressParseList_PAREN (parserUtils.c:395)
-==73630==    by 0x109EBC: main (parserUtils.c:424)
-==73630== 
-==73630== Conditional jump or move depends on uninitialised value(s)
-==73630==    at 0x109C26: compressParseList_MUL (parserUtils.c:350)
-==73630==    by 0x109E05: compressParseList (parserUtils.c:406)
-==73630==    by 0x109DA6: compressParseList_PAREN (parserUtils.c:395)
-==73630==    by 0x109DED: compressParseList (parserUtils.c:404)
-==73630==    by 0x109DA6: compressParseList_PAREN (parserUtils.c:395)
-==73630==    by 0x109EBC: main (parserUtils.c:424)
-==73630== 
-==73630== Conditional jump or move depends on uninitialised value(s)
-==73630==    at 0x109C7A: compressParseList_MUL (parserUtils.c:347)
-==73630==    by 0x109E05: compressParseList (parserUtils.c:406)
-==73630==    by 0x109DA6: compressParseList_PAREN (parserUtils.c:395)
-==73630==    by 0x109DED: compressParseList (parserUtils.c:404)
-==73630==    by 0x109DA6: compressParseList_PAREN (parserUtils.c:395)
-==73630==    by 0x109EBC: main (parserUtils.c:424)
-==73630== 
-==73630== Conditional jump or move depends on uninitialised value(s)
-==73630==    at 0x109CA3: compressParseList_ADD (parserUtils.c:367)
-==73630==    by 0x109E11: compressParseList (parserUtils.c:407)
-==73630==    by 0x109DA6: compressParseList_PAREN (parserUtils.c:395)
-==73630==    by 0x109DED: compressParseList (parserUtils.c:404)
-==73630==    by 0x109DA6: compressParseList_PAREN (parserUtils.c:395)
-==73630==    by 0x109EBC: main (parserUtils.c:424)
-==73630== 
-==73630== Conditional jump or move depends on uninitialised value(s)
-==73630==    at 0x109CF7: compressParseList_ADD (parserUtils.c:364)
-==73630==    by 0x109E11: compressParseList (parserUtils.c:407)
-==73630==    by 0x109DA6: compressParseList_PAREN (parserUtils.c:395)
-==73630==    by 0x109DED: compressParseList (parserUtils.c:404)
-==73630==    by 0x109DA6: compressParseList_PAREN (parserUtils.c:395)
-==73630==    by 0x109EBC: main (parserUtils.c:424)
-==73630== 
-==73630== Conditional jump or move depends on uninitialised value(s)
-==73630==    at 0x109DCC: compressParseList_PAREN (parserUtils.c:391)
-==73630==    by 0x109EBC: main (parserUtils.c:424)
-==73630== 
-'3.200e+01' -> '(-)' -> '4.000e+00' -> '(*)' -> '5.000e+00' -> '(^)' -> '_Var' -> '(^)' -> '2.000e+00' -> '(-)' -> '(5.000e+00-(0.000e+00-2.000e+00))' -> '(-)' -> '7.200e+00' -> '(*)' -> 'temp' -> (NIL)
-==73630== Conditional jump or move depends on uninitialised value(s)
-==73630==    at 0x109BA9: compressParseList_EXP (parserUtils.c:333)
-==73630==    by 0x109EDE: main (parserUtils.c:427)
-==73630== 
-==73630== Conditional jump or move depends on uninitialised value(s)
-==73630==    at 0x109BFD: compressParseList_EXP (parserUtils.c:330)
-==73630==    by 0x109EDE: main (parserUtils.c:427)
-==73630== 
-'3.200e+01' -> '(-)' -> '4.000e+00' -> '(*)' -> '((5.000e+00^_Var)^2.000e+00)' -> '(-)' -> '(5.000e+00-(0.000e+00-2.000e+00))' -> '(-)' -> '7.200e+00' -> '(*)' -> 'temp' -> (NIL)
-==73630== Conditional jump or move depends on uninitialised value(s)
-==73630==    at 0x109C26: compressParseList_MUL (parserUtils.c:350)
-==73630==    by 0x109F00: main (parserUtils.c:430)
-==73630== 
-==73630== Conditional jump or move depends on uninitialised value(s)
-==73630==    at 0x109C7A: compressParseList_MUL (parserUtils.c:347)
-==73630==    by 0x109F00: main (parserUtils.c:430)
-==73630== 
-'3.200e+01' -> '(-)' -> '(4.000e+00*((5.000e+00^_Var)^2.000e+00))' -> '(-)' -> '(5.000e+00-(0.000e+00-2.000e+00))' -> '(-)' -> '(7.200e+00*temp)' -> (NIL)
-==73630== Conditional jump or move depends on uninitialised value(s)
-==73630==    at 0x109CA3: compressParseList_ADD (parserUtils.c:367)
-==73630==    by 0x109F22: main (parserUtils.c:433)
-==73630== 
-==73630== Conditional jump or move depends on uninitialised value(s)
-==73630==    at 0x109CF7: compressParseList_ADD (parserUtils.c:364)
-==73630==    by 0x109F22: main (parserUtils.c:433)
-==73630== 
-==73630== Conditional jump or move depends on uninitialised value(s)
-==73630==    at 0x109A4F: printParseList (parserUtils.c:253)
-==73630==    by 0x109AEA: printParseList (parserUtils.c:268)
-==73630==    by 0x109F2E: main (parserUtils.c:434)
-==73630== 
-'(((3.200e+01-(4.000e+00*((5.000e+00^_Var)^2.000e+00)))-(5.000e+00-(0.000e+00-2.000e+00)))-(7.200e+00*temp))' -> (NIL)
-==73630== Conditional jump or move depends on uninitialised value(s)
-==73630==    at 0x109B7D: validateParseList (parserUtils.c:279)
-==73630==    by 0x109F44: main (parserUtils.c:436)
-==73630== 
-1
-==73630== 
-==73630== HEAP SUMMARY:
-==73630==     in use at exit: 378 bytes in 25 blocks
-==73630==   total heap usage: 719 allocs, 694 frees, 12,529 bytes allocated
-==73630== 
-==73630== LEAK SUMMARY:
-==73630==    definitely lost: 26 bytes in 3 blocks
-==73630==    indirectly lost: 352 bytes in 22 blocks
-==73630==      possibly lost: 0 bytes in 0 blocks
-==73630==    still reachable: 0 bytes in 0 blocks
-==73630==         suppressed: 0 bytes in 0 blocks
-==73630== Rerun with --leak-check=full to see details of leaked memory
-==73630== 
-==73630== Use --track-origins=yes to see where uninitialised values come from
-==73630== For lists of detected and suppressed errors, rerun with: -s
-==73630== ERROR SUMMARY: 38 errors from 22 contexts (suppressed: 0 from 0)
-]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ [K]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ valgrind ./parsertest -s[K[K]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ valgrind ./parsertest[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Kgit add .
-]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ git commit -m "parsing tree made; a[Kvery sloppy and needs to be cleaned uplist[K[K[K[K[1P[1P[C[1P[1P[1@l[1@i[1@s[1@t[C[1@ [C[C[C[C[C[1@n[1@a[1@ [1@d[1P[1P[1P[1P[1@ [1@a[1@n[1@d[1@ [1@c[1@o[1@m[1@p[1@l[1@e[1@t[1@e[1@d[1@ [1P[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C,[K and refactored"
-[trial1 9ed048b] parsing list  made and completed; very sloppy and needs to be cleaned up and refactored
- 4 files changed, 631 insertions(+), 25 deletions(-)
- create mode 100644 typescript
-]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ git push
-fatal: The current branch trial1 has no upstream branch.
-To push the current branch and set the remote as upstream, use
-
-    git push --set-upstream origin trial1
-
-]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ git push --set-upstream origin trial1
-Enumerating objects: 20, done.
-Counting objects:   5% (1/20)Counting objects:  10% (2/20)Counting objects:  15% (3/20)Counting objects:  20% (4/20)Counting objects:  25% (5/20)Counting objects:  30% (6/20)Counting objects:  35% (7/20)Counting objects:  40% (8/20)Counting objects:  45% (9/20)Counting objects:  50% (10/20)Counting objects:  55% (11/20)Counting objects:  60% (12/20)Counting objects:  65% (13/20)Counting objects:  70% (14/20)Counting objects:  75% (15/20)Counting objects:  80% (16/20)Counting objects:  85% (17/20)Counting objects:  90% (18/20)Counting objects:  95% (19/20)Counting objects: 100% (20/20)Counting objects: 100% (20/20), done.
-Delta compression using up to 8 threads
-Compressing objects:   6% (1/15)Compressing objects:  13% (2/15)Compressing objects:  20% (3/15)Compressing objects:  26% (4/15)Compressing objects:  33% (5/15)Compressing objects:  40% (6/15)Compressing objects:  46% (7/15)Compressing objects:  53% (8/15)Compressing objects:  60% (9/15)Compressing objects:  66% (10/15)Compressing objects:  73% (11/15)Compressing objects:  80% (12/15)Compressing objects:  86% (13/15)Compressing objects:  93% (14/15)Compressing objects: 100% (15/15)Compressing objects: 100% (15/15), done.
-Writing objects:   6% (1/15)Writing objects:  13% (2/15)Writing objects:  20% (3/15)Writing objects:  26% (4/15)Writing objects:  33% (5/15)Writing objects:  40% (6/15)Writing objects:  46% (7/15)Writing objects:  53% (8/15)Writing objects:  60% (9/15)Writing objects:  66% (10/15)Writing objects:  73% (11/15)Writing objects:  80% (12/15)Writing objects:  86% (13/15)Writing objects:  93% (14/15)Writing objects: 100% (15/15)Writing objects: 100% (15/15), 13.34 KiB | 4.45 MiB/s, done.
-Total 15 (delta 8), reused 0 (delta 0)
-remote: Resolving deltas:   0% (0/8)[Kremote: Resolving deltas:  25% (2/8)[Kremote: Resolving deltas:  62% (5/8)[Kremote: Resolving deltas:  75% (6/8)[Kremote: Resolving deltas:  87% (7/8)[Kremote: Resolving deltas: 100% (8/8)[Kremote: Resolving deltas: 100% (8/8), completed with 4 local objects.[K
-remote: This repository moved. Please use the new location:[K
-remote:   https://github.com/Shinleon/computationTree.git[K
-remote: 
-remote: Create a pull request for 'trial1' on GitHub by visiting:[K
-remote:      https://github.com/Shinleon/computationTree/pull/new/trial1[K
-remote: 
-To https://github.com/shinleon/computationTree.git
- * [new branch]      trial1 -> trial1
-Branch 'trial1' set up to track remote branch 'trial1' from 'origin'.
-]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ git branch
-[?1h=  master[m[m
-* [32mtrial1[m[m
-[K[?1l>]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ git [K[K[K[Kgit log
-[?1h=[33mcommit 9ed048b526dd745a63b29032af4cf68fbb5c2844[m[33m ([m[1;36mHEAD -> [m[1;32mtrial1[m[33m, [m[1;31morigin/trial1[m[33m)[m[m
-Author: shinleon <shinleon@uw.edu>[m
-Date:   Sun Jul 12 14:32:16 2020 -0700[m
-[m
-    parsing list  made and completed; very sloppy and needs to be cleaned up and refactored[m
-[m
-[33mcommit f657d5e222f5760244944420777f1c9ae56764ce[m[m
-Author: shinleon <shinleon@uw.edu>[m
-Date:   Sat Jul 11 22:11:00 2020 -0700[m
-[m
-    made changes and realized parsing parens is like branch merging pt 2 cause i didn't save[m
-[m
-[33mcommit 39801b83bae72b121fff4a416865e27f15b3ff49[m[m
-Author: shinleon <shinleon@uw.edu>[m
-Date:   Sat Jul 11 22:10:37 2020 -0700[m
-[m
-    made changes and realized parsing parens is like branch merging[m
-[m
-[33mcommit 61077ea75dc5ae4f4b7fe31bacf4cd3516ea6acb[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m[m
-Author: shinleon <shinleon@uw.edu>[m
-Date:   Sat Jul 11 10:10:29 2020 -0700[m
-[m
-    didn't fully save[m
-[m
-[33mcommit 30f7dffa663370a9bbc4e5321c7e687b5c5b0927[m[m
-Author: shinleon <shinleon@uw.edu>[m
-Date:   Sat Jul 11 10:10:13 2020 -0700[m
-[m
-    committing cause I have the general structure down but I want to branch it so I can easily roll back changes and develop a solution in different ways[m
-[m
-[33mcommit 9d74c1f781e355b1ac448a54b60a35431e28a14a[m[m
-Author: shinleon <shinleon@uw.edu>[m
-Date:   Fri Jul 10 01:48:58 2020 -0700[m
-[m
-:[K[K[K:[K[K:[K[K[7mNo next tag  (press RETURN)[27m[35;1H[K[K:[K[K:[K[K:[K[K[K:[K[K:[K11[K[K:[K[K:[K[K:[K11[K[K:[K[K[?1l>]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ git [K[K[K[Kgit checkout master
-error: Your local changes to the following files would be overwritten by checkout:
-	typescript
-Please commit your changes or stash them before you switch branches.
-Aborting
-]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ cd[K[Kgo gitign[K[K[K[K[K[K.gitignore
-]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ go .gitignore[Kgit add .
-]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ git commit -m "added *sctript[K[K[K[K[Kript to gitignore s [Ko it doen[Ksn't com[Kpy and[Ky o [Kf my scripts
-> "
-[trial1 67f586d] added *script to gitignore so it doesn't copy any of my scripts
- 2 files changed, 94 insertions(+), 1 deletion(-)
-]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ git c[K[K[K[K[Kclose
-
-Command 'close' not found, did you mean:
-
-  command 'gclose' from deb gnustep-gui-runtime (0.27.0-5build2)
-
-Try: sudo apt install <deb name>
-
-]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ sexit
-sexit: command not found
-]0;wombatinkombat@wombatinkombat-Inspiron-5379: ~/Documents/cProg/compTree[01;32mwombatinkombat@wombatinkombat-Inspiron-5379[00m:[01;34m~/Documents/cProg/compTree[00m$ exit
-exit
-
-Script done on 2020-07-12 14:39:24-07:00 [COMMAND_EXIT_CODE="127"]
