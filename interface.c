@@ -43,7 +43,8 @@ int main()
     }
     else if (strcmp("env", command) == 0)
     {
-      printEnvironmentNode(env);
+      printf("\n");
+      displayEnvironment(env);
       printf("\n");
     }
     else
@@ -80,7 +81,8 @@ int main()
           {
             struct environmentNode* toAdd = makeEnvironmentNode(*varN, compRoot);
             env = placeEnvironmentNode(env, toAdd);
-            printEnvironmentNode(env);
+            printf("\n");
+            displayEnvironment(env);
             printf("\n");
           }
           else
@@ -93,7 +95,7 @@ int main()
         else
         {
           float f = evalCompNode(compRoot, env, NULL);
-          printf("out <<:  %f\n", f);
+          printf("out <<:  %e\n", f);
           freeCompNode(compRoot);
         }
       }
@@ -120,11 +122,19 @@ void splitOnEqual(char* original, char** left, char** right)
   charnode* rightAddPoint = NULL;
 
   int equal = 0; //tracks if we've seen an equal sign yet
+  int beginning = 1; // if 1, don't add spaces to rightTemp
+  charnode* lastnonWhitespace = NULL;
+  int rollback = 0;  // if 1, then freecharlist(lastnonWhitespace->next);
+                     // lastnonWhitespace->next = NULL;
   for(int i = 0; i < strlen(original); i++)
   {
     if(original[i] == '=' && !equal)
     {
       equal = 1;
+      // printCharnode(rightTemp);
+      freeCharnodeList(lastnonWhitespace->next);
+      lastnonWhitespace->next = NULL;
+
       leftTemp = rightTemp;
       rightTemp = NULL;
       rightAddPoint = NULL;
@@ -141,6 +151,11 @@ void splitOnEqual(char* original, char** left, char** right)
         rightTemp = makeCharnode(original[i]);
         rightAddPoint = rightTemp;
       }
+      
+      if(original[i] != ' ')
+      {
+        lastnonWhitespace = rightAddPoint;
+      }
     }
   }
   // here we need t store charnodetostring(rightTemp) in *right;
@@ -156,7 +171,7 @@ void splitOnEqual(char* original, char** left, char** right)
   if(leftTemp)
   {
     char* leftString = charnodeToString(leftTemp);
-    printf("leftString: %s\n", leftString);
+    // printf("leftString: \"%s\"\n", leftString);
     *left = leftString;
   }
   else

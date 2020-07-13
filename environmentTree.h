@@ -10,6 +10,7 @@ struct environmentNode* placeEnvironmentNode(
   struct environmentNode* toPlace);
 
 void printEnvironmentNode(struct environmentNode* root);
+void displayEnvironment(struct environmentNode* root);
 void freeEnvironmentNode(struct environmentNode* root);
 
 struct environmentNode* getEnvironmentNode(struct environmentNode* root, char* searchKey);

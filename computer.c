@@ -64,7 +64,7 @@ float evalCompNode(struct compNode* node, struct environmentNode* env, struct wo
         {
           printf("ERROR: recursively defined variable: '%s' : ", node->d->varName);
           printWordnode(dependencies);
-          printf("\n\tSetting it(%s)to zero(0)\n", node->d->varName);
+          printf("\tSetting it(%s)to zero(0)\n", node->d->varName);
           return 0;
         }
         dependencies = linearInsert(dependencies, makeWordnode(node->d->varName));

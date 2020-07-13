@@ -70,6 +70,18 @@ void printEnvironmentNode(struct environmentNode* root)
   }
 }
 
+void displayEnvironment(struct environmentNode* root)
+{
+  if(root)
+  {
+    char* rootCompStr = compNodeToString(root->expression);
+    printf("Name: %s, compTree = '%s'\n", root->varName, rootCompStr);
+    free(rootCompStr);
+    displayEnvironment(root->leftenv);
+    displayEnvironment(root->rightenv);
+  }
+}
+
 struct environmentNode* getEnvironmentNode(struct environmentNode* root, char* searchKey)
 {
   if(root)
