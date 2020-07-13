@@ -5,7 +5,7 @@ union Data
 {
   char* varName;
   float num;
-} Data;
+};
 
 enum operations 
 {

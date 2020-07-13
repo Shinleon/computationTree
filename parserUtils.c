@@ -8,21 +8,23 @@
 #include "parserDef.h"
 #include "compNodeDef.h"
 #include "compNodeUtils.h"
+#include "charToCompTranslation.h"
 #include "constants.h"
-
-// struct parseList* makeParseList(char* input);
-// struct compNode* parseLisToCompTree(struct parseList* lis);
-// void freeParsenode (struct parseList* lis);
 
 //method that returns 1 if c is alphabetic or '_'
 // or returns 1 if c is a digit, but charnode* preRet isn't null
-int validVarChar(char c, struct charnode* preRet);
 
-struct charnode* getNextVarnameAsCompNode(struct compNode** result, struct charnode* curr);
 
-struct charnode* getNextFloatAsCompNode(struct compNode** result, struct charnode* curr);
-
-struct charnode* getOperator(struct compNode** result, struct charnode* curr);
+void freeParseList(struct parseList* listed)
+{
+  if(listed)
+  {
+    freeParseList(listed->subParen);
+    freeParseList(listed->next);
+    freeCompNode(listed->compRoot);
+    free(listed);
+  }
+}
 
 void printParseList(struct parseList* listed);
 
@@ -43,10 +45,6 @@ struct parseList* makeParseList(enum operatorBool isOperator,
   return ret;
 }
 
-int isOperator(char c)
-{
-  return (c == '^') || (c == '/') || (c == '*') || (c == '-') || (c == '+') ;
-}
 
 struct parseList* appendParseList(struct parseList* head, struct parseList* toAppend)
 {
@@ -59,6 +57,8 @@ struct parseList* appendParseList(struct parseList* head, struct parseList* toAp
   return toAppend;
 }
 
+// need to do proper free's when charToCompTranslation's return NULL;
+// returns NULL on error and if *input = NULL;
 struct parseList* charnodeToParseList(struct charnode** input, int depth)
 {
   if(!input)
@@ -66,7 +66,7 @@ struct parseList* charnodeToParseList(struct charnode** input, int depth)
     return NULL;
   }
   struct parseList* ret = NULL;
-  struct parseList* attachpoint = NULL; //append takes n time, but have yet
+  //struct parseList* attachpoint = NULL; //append takes O(n) time, but have yet
                                         // to implement a better O(1) time 
                                         // append;
   struct charnode* temp = *input;
@@ -86,6 +86,8 @@ struct parseList* charnodeToParseList(struct charnode** input, int depth)
       if(depth == 0)
       {
         // printf("fautly expression: too many closing paren.\n");
+        // need to do a full free;
+        freeParseList(ret);
         return NULL;
       }
       *input = temp->next;
@@ -120,7 +122,14 @@ struct parseList* charnodeToParseList(struct charnode** input, int depth)
       struct parseList* tempparse = NULL;
       struct compNode** tempcomp = malloc(sizeof(struct compnode*));
       temp = getNextVarnameAsCompNode(tempcomp, temp);
-
+      if(*tempcomp == NULL) //should only happen if the varName of struct  
+                            //was going to hold "quit", "exit", or "env"
+      {
+        //fully free all objects and return null
+        freeParseList(ret);
+        free(tempcomp);
+        return NULL;
+      }
       tempparse = makeParseList(OP_FALSE, *tempcomp, NULL, NULL);
 
       free(tempcomp);
@@ -135,6 +144,14 @@ struct parseList* charnodeToParseList(struct charnode** input, int depth)
       struct compNode** tempcomp = malloc(sizeof(struct compnode*));
       temp = getNextFloatAsCompNode(tempcomp, temp);
 
+      if(*tempcomp == NULL) //should only happen if the varName of struct  
+                            //was going to hold "quit", "exit", or "env"
+      {
+        //fully free all objects and return null
+        freeParseList(ret);
+        free(tempcomp);
+        return NULL;
+      }
       tempparse = makeParseList(OP_FALSE, *tempcomp, NULL, NULL);
 
       free(tempcomp);
@@ -156,97 +173,19 @@ struct parseList* charnodeToParseList(struct charnode** input, int depth)
       wasOperator = 1;
       ret = appendParseList(ret, tempparse);
     }
-    else
+    else if(temp->data == ' ')
     {
+      temp = temp->next;
+    }
+    else 
+    {
+      //need to full free;
+      freeParseList(ret);
       printf("invalid expression syntax; aborting\n");
       return NULL;
     }
   }
   return ret;
-}
-
-int validVarChar(char c, struct charnode* preRet)
-{
-  int ret = 0;
-  //check between 'A' and 'Z', check between 'a' and 'z', check for '_'
-  if (( c > 64 && c < 91 ) || ( c > 96 && c < 123 ) || c == '_')
-  {
-    ret = 1;
-  }
-  //if varchar has something in it, it can include a digit, it cannot
-  // start with a digit, though.
-  if(preRet && c >= zero_char && c <= zero_char + 9)
-  {
-    ret = 1;
-  }
-  return ret;
-}
-
-struct charnode* getNextFloatAsCompNode(struct compNode** result, struct charnode* curr)
-{
-  struct charnode* preRet = NULL;
-  while(curr && (isdigit(curr->data) || curr->data == '.'))
-  {
-    // printf("entered loop\n");
-    preRet = append(preRet, makeCharnode(curr->data));
-    // printCharnode(preRet);
-    curr = curr->next;
-  }
-  char* temp = charnodeToString(preRet);
-  // printf("'%s'\n", temp);
-  float f_temp = strtod(temp, NULL);
-  union Data* d = malloc(sizeof(union Data));
-  d->num = f_temp;
-  *result = makeCompNode(NUM, NULL, NULL, d);
-  printCharnode(preRet);
-  freeCharnodeList(preRet);
-  free(temp);
-  return curr;
-}
-
-struct charnode* getNextVarnameAsCompNode(struct compNode** result, struct charnode* curr)
-{
-  struct charnode* preRet = NULL;
-  while(curr && validVarChar(curr->data, preRet))
-  {
-    preRet = append(preRet, makeCharnode(curr->data));
-    curr = curr->next;
-  }
-  char* varName = charnodeToString(preRet);
-  union Data* d = malloc(sizeof(union Data));
-  d->varName = varName;
-  *result = makeCompNode(VAR, NULL, NULL, d);
-  freeCharnodeList(preRet);
-  return curr;
-}
-
-struct charnode* getOperator(struct compNode** result, struct charnode* curr)
-{
-  if(curr->data ==  '^')
-  {
-    *result = makeCompNode(EXP, NULL, NULL, NULL);
-  }
-  else if(curr->data ==  '*')
-  {
-    *result = makeCompNode(MUL, NULL, NULL, NULL);
-  }
-  else if(curr->data ==  '/')
-  {
-    *result = makeCompNode(QUO, NULL, NULL, NULL);
-  }
-  else if(curr->data ==  '+')
-  {
-    *result = makeCompNode(ADD, NULL, NULL, NULL);
-  }
-  else if(curr->data ==  '-')
-  {
-    *result = makeCompNode(SUB, NULL, NULL, NULL);
-  }
-  else 
-  {
-    *result = NULL;
-  }
-  return curr->next;
 }
 
 void printParseList(struct parseList* listed)
@@ -402,6 +341,10 @@ void compressParseList_PAREN(struct parseList* listed)
 
 struct compNode* compressParseList(struct parseList* listed)
 {
+  if(!listed)
+  {
+    return NULL;
+  }
   compressParseList_PAREN(listed);
   compressParseList_EXP(listed);
   compressParseList_MUL(listed);
@@ -411,41 +354,4 @@ struct compNode* compressParseList(struct parseList* listed)
   return ret;
 }
 
-int main()
-{
-  char* temp = "5^2^2^6-4*3+(9^(3-2))";
-  //char** result = malloc(sizeof(char*));
-  printf("%s\n", temp);
-  struct charnode* number = strToCharlist(temp);
-  struct charnode** input = malloc(sizeof(struct charnode*));
-  *input = number;
-  struct parseList* listed = charnodeToParseList(input, 0);
-  free(input);
-  //printf("number printing: ");
-  //printCharnode(number);
-  freeCharnodeList(number);
-  printParseList(listed);
-  printf("\n");
-  compressParseList_PAREN(listed);
-  printf("digesting parens: ");
-  printParseList(listed);
-  printf("\n");
-  compressParseList_EXP(listed);
-  printf("digesting exponents: ");
-  printParseList(listed);
-  printf("\n");
-  compressParseList_MUL(listed);
-  printf("digesting multiplication and div: ");
-  printParseList(listed);
-  printf("\n");
-  compressParseList_ADD(listed);
-  printf("digesting addition and subtraction: ");
-  printParseList(listed);
-  printf("\n");
-  printf("validating parselist: %d\n", validateParseList(listed));
-  //printParseList(listed); printf("\n");
-  freeCompNode(listed->compRoot);
-  free(listed);
-  //printf("%s\n", *result);
-}
 

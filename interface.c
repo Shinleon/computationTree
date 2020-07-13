@@ -1,0 +1,197 @@
+#include <stdlib.h>
+#include <stdio.h>
+
+#include "parserUtils.h"
+#include "compNodeUtils.h"
+#include "charnode.h"
+#include "environment.h"
+#include "environmentTree.h"
+#include "computer.h"
+
+void splitOnEqual(char* original, char** left, char** right);
+
+int verify(char* name);
+
+void intro()
+{
+  printf("Hello! Welcome to a small computing unit.\n");
+  printf("This computing program was made by Leonard Shin.\n");
+  printf("It can hold variables using input format of \n<variable name>");
+  printf("=<expression>. An expression can be \"3+4\" or anything that makes\n");
+  printf("mathematical sense in that it has operators, parenthesis, constants, and variables\n");
+  printf("An expression such as \"(3+(2-4)^2 + 5\" will be interpreted as \"(3+(2-4)^2 + 5)\"\n");
+  printf("Any missing closing parethesis will be automatically added to the end while extra closing\n");
+  printf("parenthesis will cause an error.\n");
+  printf("This is version 1.0\n");
+  printf("Type ctrl+D (aka. EOF) to exit. Thanks for using this!\n");
+
+}
+
+int main()
+{
+  intro();
+  struct environmentNode* env = NULL;
+
+  int exit = 0;
+  while(!exit)
+  { 
+    printf("in  :>>>  ");
+    char* command = wordFromScan(); // should be trimmed
+    if(strcmp("exit", command) == 0 || strcmp("quit", command) == 0)
+    {
+      exit = 1;
+    }
+    else if (strcmp("env", command) == 0)
+    {
+      printEnvironmentNode(env);
+      printf("\n");
+    }
+    else
+    {
+      // printf("%s\n", command);
+      char** varN = malloc(sizeof(char*));
+      char** expPtr = malloc(sizeof(char*));
+
+      splitOnEqual(command, varN, expPtr);
+
+      struct charnode* tempchar = strToCharlist(*expPtr);
+      // printf("%s\n", *expPtr);
+      free(*expPtr);
+      free(expPtr);
+      struct charnode** input = malloc(sizeof(struct charnode*));
+      *input = tempchar;
+
+      struct parseList* tempParse = charnodeToParseList(input, 0);
+      // printCharnode(tempchar);
+      free(input);
+      freeCharnodeList(tempchar);
+      if(tempParse)
+      {
+        struct compNode* compRoot = compressParseList(tempParse);
+        /*
+        char* __toPrint = compNodeToString(compRoot);
+        printf("%s\n", __toPrint);
+        free(__toPrint);
+        //*/
+        if(*varN)
+        {
+          int valid = verify( *varN );
+          if(valid)
+          {
+            struct environmentNode* toAdd = makeEnvironmentNode(*varN, compRoot);
+            env = placeEnvironmentNode(env, toAdd);
+            printEnvironmentNode(env);
+            printf("\n");
+          }
+          else
+          {
+            printf("\"%s\" isn't a valid variable name.\n", *varN);
+            free(*varN);
+            freeCompNode(compRoot);
+          }
+        }
+        else
+        {
+          float f = evalCompNode(compRoot, env, NULL);
+          printf("out <<:  %f\n", f);
+          freeCompNode(compRoot);
+        }
+      }
+      else
+      {
+        
+      }
+      free(varN);
+    }
+    free(command);
+  }
+  //full free of environment
+  freeEnvironmentNode(env);
+
+}
+
+// splits original on the first equal sign '='
+// copies lef of equal to left and copies right of equal to right;
+void splitOnEqual(char* original, char** left, char** right)
+{
+  charnode* leftTemp = NULL;
+
+  charnode* rightTemp = NULL;
+  charnode* rightAddPoint = NULL;
+
+  int equal = 0; //tracks if we've seen an equal sign yet
+  for(int i = 0; i < strlen(original); i++)
+  {
+    if(original[i] == '=' && !equal)
+    {
+      equal = 1;
+      leftTemp = rightTemp;
+      rightTemp = NULL;
+      rightAddPoint = NULL;
+    }
+    else
+    {
+      if(rightTemp)
+      {
+        rightAddPoint->next = makeCharnode(original[i]);
+        rightAddPoint = rightAddPoint->next;
+      }
+      else
+      {
+        rightTemp = makeCharnode(original[i]);
+        rightAddPoint = rightTemp;
+      }
+    }
+  }
+  // here we need t store charnodetostring(rightTemp) in *right;
+  if(rightTemp)
+  {
+    char* rightString = charnodeToString(rightTemp);
+    *right = rightString;
+  }
+  else
+  {
+    *right = NULL;
+  }
+  if(leftTemp)
+  {
+    char* leftString = charnodeToString(leftTemp);
+    printf("leftString: %s\n", leftString);
+    *left = leftString;
+  }
+  else
+  {
+    *left = NULL;
+  }
+  //now free the charnodes;
+  freeCharnodeList(rightTemp);
+  freeCharnodeList(leftTemp);
+}
+
+int verify(char* name)
+{
+  if(strcmp("exit", name) == 0 || strcmp("quit", name) == 0 || strcmp("env", name) == 0)
+  {
+    return 0;
+  }
+  else 
+  {
+    struct charnode* trigger = NULL;
+    for(int i = 0; i < strlen(name); i++)
+    {
+      if(i == 1)
+      {
+        trigger = makeCharnode('\t');
+      }
+      int ret = validVarChar(name[i], trigger);
+      if(ret == 0)
+      {
+        free(trigger);
+        return 0;
+      }
+    }
+    free(trigger);
+  }
+  return 1;
+}
+

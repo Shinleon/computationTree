@@ -91,14 +91,14 @@ struct environmentNode* getEnvironmentNode(struct environmentNode* root, char* s
   return NULL;
 }
 
-void freeEnvirontmentNode(struct environmentNode* root)
+void freeEnvironmentNode(struct environmentNode* root)
 {
   if(root)
   {
-    freeEnvirontmentNode(root->leftenv);
-    freeEnvirontmentNode(root->rightenv);
+    freeEnvironmentNode(root->leftenv);
+    freeEnvironmentNode(root->rightenv);
     freeCompNode(root->expression);
-    // free(root->varName);
+    free(root->varName);
     free(root);
   }
 }

@@ -83,6 +83,7 @@ float evalCompNode(struct compNode* node, struct environmentNode* env, struct wo
   exit(-1);
 }
 
+/*
 int main()
 {
   printf("start\n");
@@ -159,3 +160,4 @@ int main()
   freeEnvirontmentNode(env);
   freeCompNode(top);
 }
+*/
