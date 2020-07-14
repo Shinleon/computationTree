@@ -8,10 +8,14 @@
 #include "environmentTree.h"
 #include "wordnode.h"
 
+#define DIV_BY_ZERO (-3)
+#define UNDECLARED_VAR (-2)
+#define RECURSEIV_VAR  (-1)
+
 // appropriate gcc call //
 // gcc -std=c11 -Wall -g -o test computer.c compNodeUtils.c charnode.c environmentTree.c wordnode.c -lm
 
-float evalCompNode(struct compNode* node, struct environmentNode* env, struct wordnode* dependencies)
+float evalCompNode(struct compNode* node, struct environmentNode* env, struct wordnode* dependencies, int* errorCode)
 {
   if (node)
   {
@@ -20,24 +24,28 @@ float evalCompNode(struct compNode* node, struct environmentNode* env, struct wo
     case EXP:
       // could do original implementation, but also, computing log numerically...
       // https://stackoverflow.com/questions/1375953/how-to-calculate-an-arbitrary-power-root
-      return (float)pow((double) evalCompNode(node->left, env, dependencies),
-                        (double) evalCompNode(node->right, env, dependencies));
+      return (float)pow((double) evalCompNode(node->left, env, dependencies, errorCode),
+                        (double) evalCompNode(node->right, env, dependencies, errorCode));
       // return 0;
     case MUL:
-      return evalCompNode(node->left, env, dependencies) * evalCompNode(node->right, env, dependencies);
+      return evalCompNode(node->left, env, dependencies, errorCode) * evalCompNode(node->right, env, dependencies, errorCode);
     case QUO:{
-        float divisor = evalCompNode(node->right, env, dependencies);
+        float divisor = evalCompNode(node->right, env, dependencies, errorCode);
+
+        float dividend = evalCompNode(node->left, env, dependencies, errorCode);
+
         if(divisor != 0)
         {
-          return evalCompNode(node->left, env, dependencies) / divisor;
+          return  dividend / divisor;
         }
-        printf("Division by zero detected in expression; evaluated to FLT_MAX;\n");
+        printf("Division by zero detected in expression;\n");
+        *errorCode = DIV_BY_ZERO;
         return __FLT_MAX__;
       }
     case SUB:
-      return evalCompNode(node->left, env, dependencies) - evalCompNode(node->right, env, dependencies);
+      return evalCompNode(node->left, env, dependencies, errorCode) - evalCompNode(node->right, env, dependencies, errorCode);
     case ADD:
-      return evalCompNode(node->left, env, dependencies) + evalCompNode(node->right, env, dependencies);
+      return evalCompNode(node->left, env, dependencies, errorCode) + evalCompNode(node->right, env, dependencies, errorCode);
     case VAR: 
       {
         // need to make environment aka, envirTree 
@@ -52,7 +60,8 @@ float evalCompNode(struct compNode* node, struct environmentNode* env, struct wo
         if(!envNode)
         {
           printf("NOTIFICATION: variable: %s : not declared w/ value.\n", node->d->varName);
-          return 0;
+          *errorCode = UNDECLARED_VAR;
+          return __FLT_MAX__;
         }
         // node->d->varName contains a name
         // envNode->expression contains the compNode 
@@ -64,12 +73,13 @@ float evalCompNode(struct compNode* node, struct environmentNode* env, struct wo
         {
           printf("ERROR: recursively defined variable: '%s' : ", node->d->varName);
           printWordnode(dependencies);
-          printf("\tSetting it(%s)to zero(0)\n", node->d->varName);
-          return 0;
+          // printf("\tSetting it (%s)to zero(0)\n", node->d->varName);
+          *errorCode = RECURSEIV_VAR;
+          return __FLT_MAX__;
         }
         dependencies = linearInsert(dependencies, makeWordnode(node->d->varName));
         //#// printf("WordList after addition of current var; ");
-        float ret = evalCompNode(envNode->expression, env, dependencies);
+        float ret = evalCompNode(envNode->expression, env, dependencies, errorCode);
         
         //have to remove dependency so other branches won't see this branch's dependencies
         dependencies = removeWordNode(dependencies, node->d->varName);

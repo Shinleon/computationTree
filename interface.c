@@ -23,7 +23,9 @@ void intro()
   printf("Any missing closing parethesis will be automatically added to the end while extra closing\n");
   printf("parenthesis will cause an error.\n");
   printf("This is version 1.0\n");
-  printf("Type ctrl+D (aka. EOF) to exit. Thanks for using this!\n");
+  printf("Type \"quit\" or \"exit\" to quit. [Ctrl+d/EOF will triggers an infinite loop when\n");
+  printf("used alone on the input promt, and is otherwise just ignored]\n");
+  printf(". Thanks for using this!\n");
 
 }
 
@@ -37,13 +39,18 @@ int main()
   { 
     printf("in  :>>>  ");
     char* command = wordFromScan(); // should be trimmed
+    // printf("\"%s\"\n", command);
     if(strcmp("exit", command) == 0 || strcmp("quit", command) == 0)
     {
       exit = 1;
     }
-    else if (strcmp("env", command) == 0)
+    else if (strcmp("env", command) == 0 || strcmp("", command) == 0)
     {
       printf("\n");
+      if(env == NULL)
+      {
+        printf("Empty Environment.\n");
+      }
       displayEnvironment(env);
       printf("\n");
     }
@@ -94,8 +101,14 @@ int main()
         }
         else
         {
-          float f = evalCompNode(compRoot, env, NULL);
-          printf("out <<:  %e\n", f);
+          int* errorCatch = malloc(sizeof(int*));
+          *errorCatch = 0;
+          float f = evalCompNode(compRoot, env, NULL, errorCatch);
+          if(*errorCatch == 0)
+          {
+            printf("out <<<:  %e\n", f);
+          }
+          free(errorCatch);
           freeCompNode(compRoot);
         }
       }
@@ -122,10 +135,7 @@ void splitOnEqual(char* original, char** left, char** right)
   charnode* rightAddPoint = NULL;
 
   int equal = 0; //tracks if we've seen an equal sign yet
-  int beginning = 1; // if 1, don't add spaces to rightTemp
   charnode* lastnonWhitespace = NULL;
-  int rollback = 0;  // if 1, then freecharlist(lastnonWhitespace->next);
-                     // lastnonWhitespace->next = NULL;
   for(int i = 0; i < strlen(original); i++)
   {
     if(original[i] == '=' && !equal)

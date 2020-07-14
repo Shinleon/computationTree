@@ -241,32 +241,34 @@ int validateParseList(struct parseList* listed)
 
 void compressParseList_EXP(struct parseList* listed)
 {
-  // START
-  //                      listed
-  //                        | possibleoperator
-  //                        |    |   right
-  //                        |    |     |
-  //                        V    V     V
-  // 32 -> '-' -> 4 -> * -> 6 -> ^ -> 0.5 -> ^ -> 5
+  /*
+  START
+                       listed
+                         | possibleoperator
+                         |    |   right
+                         |    |     |
+                         V    V     V
+  32 -> '-' -> 4 -> * -> 6 -> ^ -> 0.5 -> ^ -> 5
 
-  // x =  ^
-  //    // \ 
-  //    6  0.5
-  // MID 
-  //                      listed
-  //                        | possibleoperator
-  //                        |    |    right
-  //                        |    |     |
-  //                        V    V     V
-  // 32 -> '-' -> 4 -> * -> x -> ^ -> 0.5 -> ^ -> 5
-  // 
-  // END
-  //                      listed
-  //                        | possibleoperator
-  //                        |    |   right
-  //                        |    |    |
-  //                        V    V    V
-  // 32 -> '-' -> 4 -> * -> x -> ^ -> 5
+  x =  ^
+     // \ 
+     6  0.5
+  MID 
+                       listed
+                         | possibleoperator
+                         |    |    right
+                         |    |     |
+                         V    V     V
+  32 -> '-' -> 4 -> * -> x -> ^ -> 0.5 -> ^ -> 5
+  
+  END
+                       listed
+                         | possibleoperator
+                         |    |   right
+                         |    |    |
+                         V    V    V
+  32 -> '-' -> 4 -> * -> x -> ^ -> 5
+  */
   while(listed)
   {
     struct parseList* possibleOperator = listed->next;

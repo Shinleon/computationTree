@@ -163,21 +163,26 @@ char* wordFromScan() {
   int beginning = 1;
   if (c != '\n') {
     // printf("\"%c",c);
-    if( c != ' ' || beginning != 1 ) {
+    if( c != ' ' || beginning != 1 ) 
+    {
       item = makeCharnode(c);
       temp = item;
     }
     c = getc(stdin);
-    while (c != '\n') {
+    while (c != '\n' && c != EOF) 
+    {
       // printf("%c",c);
       if(temp) {
-	temp->next = makeCharnode(c);
-	temp = temp->next;
-      } else {
-	if( c != ' ' || beginning != 1) {
+	      temp->next = makeCharnode(c);
+	      temp = temp->next;
+      }
+      else 
+      {
+	      if( c != ' ' || beginning != 1)
+         {
           item = makeCharnode(c);
-	  temp = item;
-	  beginning = 0;
+	        temp = item;
+	        beginning = 0;
         }
       }
       c = getc(stdin);

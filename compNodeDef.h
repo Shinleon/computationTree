@@ -10,6 +10,7 @@ union Data
 enum operations 
 {
              // raw   // ((raw) + 1) / 2
+  // SIN, COS
   EXP,       // 0     // 0 
   QUO, MUL,  // 1, 2  // 1
   ADD, SUB,  // 3, 4  // 2
