@@ -55,6 +55,6 @@ interface.o: interface.c  parserUtils.o compNodeUtils.o charnode.o environmentTr
 	$(CC) $(CFLAGS) -c interface.c
 
 
-# A "phony" target to remove built files and backups
+# A "phony" target to remove built files
 clean:
-	rm -f *.o $(TARGET) *~
+	rm -f *.o $(TARGET)
