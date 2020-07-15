@@ -98,9 +98,9 @@ e.g. fourth pass (addition and subtraction)
             /     \
            /       \ 
           /         \  
-        "*"       "+"  
-       /   \      / \  
-     "-"   "^"  'VAR' 2  
+        "*"         "+"  
+       /   \        / \  
+     "-"   "^"   'VAR' 2  
      / \   / \  
     3   4 5   2  
 ```
