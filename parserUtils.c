@@ -215,10 +215,10 @@ void printParseList(struct parseList* listed)
 
 int validateParseList(struct parseList* listed)
 {
-  enum operatorBool temp = OP_TRUE;
+  enum operatorBool previousStatus = OP_TRUE;
   while(listed)
   {
-    if(temp == listed->opBool)
+    if(previousStatus == listed->opBool)
     {
       return 0;
     }
@@ -231,7 +231,7 @@ int validateParseList(struct parseList* listed)
         return parenValid;
       }
     }
-    temp = listed->opBool;
+    previousStatus = listed->opBool;
     listed = listed->next;
   }
   return 1;
