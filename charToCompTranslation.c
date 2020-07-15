@@ -8,12 +8,20 @@
 #include "charnode.h"
 #include "constants.h"
 
+// return 1 if it is a reserved var name and isn't valid
+// return 0 if it is a valid var name and not a reserved one
 int reservedVarName(char* possibleVar)
 {
   // printf("In reserved var: \"%s\" \n", possibleVar);
-  return  (strcmp(possibleVar,"env")  == 0 ) ||
-          (strcmp(possibleVar,"quit")  == 0 ) ||
-          (strcmp(possibleVar,"exit")  == 0 );
+  char banned[FORBIDDEN_QUANTITY][FORBIDDEN_LENGTH] = FORBIDDEN_WORDS;
+  for(int i = 0; i < FORBIDDEN_QUANTITY; i++)
+  {
+    if(strcmp(possibleVar,banned[i]) == 0)
+    {
+      return 1;
+    }
+  }
+  return  0;
 }
 
 int validVarChar(char c, struct charnode* preRet)
@@ -26,16 +34,26 @@ int validVarChar(char c, struct charnode* preRet)
   }
   //if varchar has something in it, it can include a digit, it cannot
   // start with a digit, though.
-  if(preRet && c >= zero_char && c <= zero_char + 9)
+  if(preRet && c >= ZERO_CHAR && c <= ZERO_CHAR + 9)
   {
     ret = 1;
   }
   return ret;
 }
 
+// return 1 if it is an operator as defined in OPERATOR_CHARS in constants.h
+// return 0 if it isn't an operator
 int isOperator(char c)
 {
-  return (c == '^') || (c == '/') || (c == '*') || (c == '-') || (c == '+') ;
+  char op[OPERATOR_QUANTITY] = OPERATOR_CHARS;
+  for(int i = 0 ; i < OPERATOR_QUANTITY; i++)
+  {
+    if( c == op[i])
+    {
+      return 1;
+    }
+  }
+  return 0;
 }
 
 struct charnode* getNextVarnameAsCompNode(struct compNode** result, struct charnode* curr)

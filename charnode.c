@@ -58,7 +58,7 @@ charnode* intToCharlist(int num){
   charnode* ret = NULL;
   charnode* temp = ret;
   while(num != 0){
-    char numeral = (char)(num % 10 + zero_char);
+    char numeral = (char)(num % 10 + ZERO_CHAR);
     if(ret == NULL){
       ret = makeCharnode(numeral);
       temp = ret;
