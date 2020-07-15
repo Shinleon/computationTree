@@ -27,6 +27,8 @@ For example, inputting "3\*4.5" will evaluate to 13.5 where as inputting
 "VAR = 3\*4.5" will store ```13.5``` in "VAR". Spaces are ignored in input unless
 they're in the middle of a float or variable name in which case they cause an error.
 
+#### Digestion of Inputs
+
 The digestion of inputs happens using repeated calls to ```getc(stdin)``` in
 charnode.c . Each character is added to a linked list of a struct that holds
 a char and a pointer to the next charnode.
@@ -42,6 +44,8 @@ e.g. "32 - (3-4)\*5^2/(VAR + 2)\n" would be digested into
 This then is used to make a parseList stuct defined in parserDef.h,
 that converts each item into a compNode struct (to be explained further 
 down) and holds them in sequence.
+
+#### How the sequence of characters becomes a computable tree
 
 The parseList for the example above would look like (using ' to surround
 variable name, nothing to surround floats, " to surround operators, and 
@@ -107,7 +111,11 @@ e.g. fourth pass (addition and subtraction)
 ```
 
 This parseList is then free'd while the compNode underneath is returned to 
-the interface. The interface then looks back and if there was an "=" in the original
+the interface. 
+
+#### What the interface does with the computable tree
+
+The interface then looks back and if there was an "=" in the original
 input, the output is assigned to a variable of name that was user provided, and the
 environment is printed.
 
