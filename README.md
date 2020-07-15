@@ -151,7 +151,7 @@ will become 14*x - 42
 4. function like variables, so that one can declare a variable as "f(x)" and 
 eventually introduce a derivative/integral like computation.
 
-5. graphing. requiring some sort of pop up image output.
+5. graphing. requiring some sort of pop-up image output.
 
 6. sin, cos, cosh, tan, ... other trig functions.
 
