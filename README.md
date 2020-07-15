@@ -47,7 +47,7 @@ down) and holds them in sequence.
 
 #### How the sequence of characters becomes a computable tree
 
-Methods in charToCompTranslation, convert
+Functions in charToCompTranslation.c/.h, convert
 this charnode linked list into a sequence of computationNodes that are placed
 into a parseList structure.
 
