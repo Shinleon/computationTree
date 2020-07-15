@@ -9,26 +9,33 @@
 
 int stringCompare(char* former, char* latter);
 
-struct wordnode* makeWordnode(char* word) {
+struct wordnode* makeWordnode(char* word) 
+{
   struct wordnode* ret = malloc(sizeof(struct wordnode));
   ret->word = word;
   ret->next = NULL;
   return ret;
 }
 
-void freeWordnode(struct wordnode* head) {
-  if (head) {
+void freeWordnode(struct wordnode* head) 
+{
+  if (head) 
+  {
     freeWordnode(head->next);
     free(head->word);
     free(head);
   }
 }
 
-void printWordnode(struct wordnode* head) {
-  if (head) {
+void printWordnode(struct wordnode* head)
+ {
+  if (head) 
+  {
     printf("%s -> ", head->word);
     printWordnode(head->next);
-  } else {
+  }
+  else 
+  {
     printf("(NULL)\n");
   }
 }
@@ -39,9 +46,12 @@ void printWordnode(struct wordnode* head) {
  * assumes searchkey is a singular wordnode whose next is NULL;
  * returns the list with searchkey inserted in place.
  */
-struct wordnode* linearInsert(struct wordnode* head, struct wordnode* searchkey) {
-  if (head) {
-    if (stringCompare(head->word, searchkey->word) >= 0) {
+struct wordnode* linearInsert(struct wordnode* head, struct wordnode* searchkey)
+{
+  if (head)
+  {
+    if (stringCompare(head->word, searchkey->word) >= 0) 
+    {
       // head->word is after searchkey->word or the same;
       searchkey->next = head;
       return searchkey;
@@ -49,9 +59,11 @@ struct wordnode* linearInsert(struct wordnode* head, struct wordnode* searchkey)
     // only pass this point is searchkey->word comes after
     //  head->word;
     struct wordnode* prev = head;
-    while (prev->next) {
+    while (prev->next) 
+    {
       struct wordnode* aft = prev->next;
-      if (stringCompare(aft->word, searchkey->word) >= 0) {
+      if (stringCompare(aft->word, searchkey->word) >= 0) 
+      {
         // aft->word is after searchkey->word or the same;
         searchkey->next = aft;
         prev->next = searchkey;
@@ -93,12 +105,14 @@ struct wordnode* inWordnodeList(struct wordnode* head, char* searchkey)
   return NULL;
 }
 
-int stringCompare(char* former, char* latter) {
+int stringCompare(char* former, char* latter) 
+{
   char* lformer = malloc(sizeof(char) * (strlen(former) + 1));
   char* llatter = malloc(sizeof(char) * (strlen(latter) + 1));
 
   int i = 0;
-  for (; i < (int) strlen(former); i++) {
+  for (; i < (int) strlen(former); i++) 
+  {
     // printf("%d ", i);
     lformer[i] = tolower(former[i]);
   }
@@ -106,7 +120,8 @@ int stringCompare(char* former, char* latter) {
   // printf("\n");
 
   i = 0;
-  for (; i < (int) strlen(latter); i++) {
+  for (; i < (int) strlen(latter); i++) 
+  {
     // printf("%d ", i);
     llatter[i] = tolower(latter[i]);
   }
