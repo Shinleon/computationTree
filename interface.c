@@ -25,7 +25,7 @@ void intro()
   printf("This is version 1.0\n");
   printf("Type \"quit\" or \"exit\" to quit. [Ctrl+d/EOF will triggers an infinite loop when\n");
   printf("used alone on the input promt, and is otherwise just ignored].\n");
-  printf("Also, please never type CTRL+D, or at least have CTRL+C read.\n Thanks for using this!\n");
+  printf("Also, please never type CTRL+D, or at least have CTRL+C ready.\n Thanks for using this!\n");
 
 }
 
