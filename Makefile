@@ -40,10 +40,11 @@ environmentTree.o: environmentTree.c compNodeUtils.o compNodeDef.h
 	$(CC) $(CFLAGS) -c environmentTree.c 
 
 compNodeUtils.o: compNodeUtils.c compNodeDef.h wordnode.o charnode.o constants.h
-	$(CC) $(CFLAGS) -c compNodeUtils.c -lm
+	$(CC) $(CFLAGS) -c compNodeUtils.c
 
+# only one that uses math.h so only one that needs -lm
 computer.o: computer.c compNodeUtils.o compNodeDef.h wordnode.o charnode.o environmentTree.o constants.h
-	$(CC) $(CFLAGS) -c computer.c -lm
+	$(CC) $(CFLAGS) -c computer.c -lm 
 
 charToCompTranslation.o: charToCompTranslation.c compNodeUtils.o charnode.o compNodeDef.h constants.h
 	$(CC) $(CFLAGS) -c charToCompTranslation.c
