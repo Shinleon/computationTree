@@ -73,7 +73,6 @@ float evalCompNode(struct compNode* node, struct environmentNode* env, struct wo
         {
           printf("ERROR: recursively defined variable: '%s' : ", node->d->varName);
           printWordnode(dependencies);
-          // printf("\tSetting it (%s)to zero(0)\n", node->d->varName);
           *errorCode = RECURSEIV_VAR;
           return __FLT_MAX__;
         }
@@ -94,7 +93,7 @@ float evalCompNode(struct compNode* node, struct environmentNode* env, struct wo
 }
 
 /*
-int main()
+void test()
 {
   printf("start\n");
   // make expression "2.5 + x"

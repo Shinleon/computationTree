@@ -1,9 +1,8 @@
 # computationTree
 
-This program is make to digest and evaluate simple expressions composed
-of the operators["^", "*", "/", "+", "-"], floats, 
-variables["a-zA-Z\_"], and parenthesis to adjust operator
-precedence.
+This program is made to digest and evaluate simple expressions composed
+of operators[```"^", "*", "/", "+", "-"```], floats, 
+variables["a-zA-Z\_"], and parenthesis (to adjust operator precedence).
 
 Certain variables are forbiden such as "exit", "quit", and "env";
 the first two because they're how you quit the program, and the last
@@ -11,8 +10,9 @@ because inputting "env" [without the quotes], will print to the terminal
 all declared variables and their values.
 
 A Makefile is provided so you can just type ```make``` if you're using Linux and
-have ```gcc ``` available.
-Thanks! And if you have any recommendations please e-mail me:  
+have ```gcc ``` available.  
+Thanks! And if you have any recommendations (even if it's formatting my readMe.md,
+maybe how to organize my files, or coding style suggestions) please e-mail me:  
 wombatinkombat@protonmail.com.
 ## Implementation
 ---
@@ -21,17 +21,16 @@ The interface (in interface.c) digests input as a string. It then splits the str
 if it finds an equal sign so that there are two strings, before and after the equal sign.
 The left strings goes into the storage, while the right string is evaluated.
 If there is no equal sign, the right string will be characterwise equal to the 
-string provided to the splitting function.
+string provided to the splitting function, while the left string will be empty.
 
 
 For example, inputting "3\*4.5" will evaluate to 13.5 where as inputting
 "VAR = 3\*4.5" will store ```13.5``` in "VAR". Spaces are ignored in input unless
 they're in the middle of a float or variable name in which case they cause an error.
 
-##### How the right string is evaluated
-
-
-The digestion of inputs happens using repeated calls to getc(stdin) in
+#### How the right string is evaluated
+--- 
+The digestion of inputs happens using repeated calls to ```getc(stdin)``` in
 charnode.c . Each character is added to a linked list of a struct that holds
 a char and a pointer to the next charnode.
 When it reaches the newline character, it stops and points the last node to NULL;
