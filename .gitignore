@@ -4,3 +4,5 @@ double_float_bit_exploration.cpp
 *test
 *script
 typescript
+*.o
+interactible 
