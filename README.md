@@ -12,7 +12,7 @@ all declared variables and their values.
 A Makefile is provided so you can just type ```make``` if you're using Linux and
 have ```gcc ``` available.  
 Thanks! And if you have any recommendations (even if it's formatting my readMe.md,
-maybe how to organize my files, or coding style suggestions) please e-mail me:  
+maybe how to organize my files, or coding style suggestions) please e-mail me: 
 wombatinkombat@protonmail.com.
 ## Implementation
 ---
