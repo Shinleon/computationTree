@@ -4,25 +4,19 @@
 #include <string.h>
 #include <ctype.h>
 
-typedef struct wordnode {
-  char* word;
-  struct wordnode* next;
-} wordnode;
+#include "wordnode.h"
 
-wordnode* makeWordnode(char* word);
-void freeWordnode(wordnode* head);
-void printWordnode(wordnode* head);
-wordnode* linearInsert(wordnode* head, wordnode* searchkey);
+
 int stringCompare(char* former, char* latter);
 
-wordnode* makeWordnode(char* word) {
-  wordnode* ret = malloc(sizeof(wordnode));
+struct wordnode* makeWordnode(char* word) {
+  struct wordnode* ret = malloc(sizeof(struct wordnode));
   ret->word = word;
   ret->next = NULL;
   return ret;
 }
 
-void freeWordnode(wordnode* head) {
+void freeWordnode(struct wordnode* head) {
   if (head) {
     freeWordnode(head->next);
     free(head->word);
@@ -30,7 +24,7 @@ void freeWordnode(wordnode* head) {
   }
 }
 
-void printWordnode(wordnode* head) {
+void printWordnode(struct wordnode* head) {
   if (head) {
     printf("%s -> ", head->word);
     printWordnode(head->next);
@@ -45,7 +39,7 @@ void printWordnode(wordnode* head) {
  * assumes searchkey is a singular wordnode whose next is NULL;
  * returns the list with searchkey inserted in place.
  */
-wordnode* linearInsert(wordnode* head, wordnode* searchkey) {
+struct wordnode* linearInsert(struct wordnode* head, struct wordnode* searchkey) {
   if (head) {
     if (stringCompare(head->word, searchkey->word) >= 0) {
       // head->word is after searchkey->word or the same;
@@ -54,9 +48,9 @@ wordnode* linearInsert(wordnode* head, wordnode* searchkey) {
     }
     // only pass this point is searchkey->word comes after
     //  head->word;
-    wordnode* prev = head;
+    struct wordnode* prev = head;
     while (prev->next) {
-      wordnode* aft = prev->next;
+      struct wordnode* aft = prev->next;
       if (stringCompare(aft->word, searchkey->word) >= 0) {
         // aft->word is after searchkey->word or the same;
         searchkey->next = aft;
@@ -74,14 +68,14 @@ wordnode* linearInsert(wordnode* head, wordnode* searchkey) {
   return searchkey;
 }
 
-wordnode* removeWordNode(wordnode* head, char* searchkey)
+struct wordnode* removeWordNode(struct wordnode* head, char* searchkey)
 {
   if(head)
   {
     int comparison = strcmp(head->word, searchkey);
     if(comparison == 0)
     {
-      wordnode* temp = head->next;
+      struct wordnode* temp = head->next;
       free(head);
       return temp;
     }
@@ -90,7 +84,7 @@ wordnode* removeWordNode(wordnode* head, char* searchkey)
   return head;
 }
 
-wordnode* inWordnodeList(wordnode* head, char* searchkey)
+struct wordnode* inWordnodeList(struct wordnode* head, char* searchkey)
 {
   if(head)
   {
@@ -104,7 +98,7 @@ int stringCompare(char* former, char* latter) {
   char* llatter = malloc(sizeof(char) * (strlen(latter) + 1));
 
   int i = 0;
-  for (; i < strlen(former); i++) {
+  for (; i < (int) strlen(former); i++) {
     // printf("%d ", i);
     lformer[i] = tolower(former[i]);
   }
@@ -112,7 +106,7 @@ int stringCompare(char* former, char* latter) {
   // printf("\n");
 
   i = 0;
-  for (; i <strlen(latter); i++) {
+  for (; i < (int) strlen(latter); i++) {
     // printf("%d ", i);
     llatter[i] = tolower(latter[i]);
   }

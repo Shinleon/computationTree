@@ -5,7 +5,7 @@ CC = gcc
 # Compiler flags:
 # -Wall for debugger warnings
 # -std=c11 for updated standards
-CFLAGS = -Wall -std=c11
+CFLAGS = -Wall -Wextra -Wpedantic -std=c11
 ifdef DEBUG
 	CFLAGS += -g
 endif

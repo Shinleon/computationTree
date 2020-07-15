@@ -239,6 +239,7 @@ int validateParseList(struct parseList* listed)
 
 // compressParseList_EXP/MUL/ADD need to be refactored
 
+// 1
 void compressParseList_EXP(struct parseList* listed)
 {
   /*
@@ -272,23 +273,6 @@ void compressParseList_EXP(struct parseList* listed)
   while(listed)
   {
     struct parseList* possibleOperator = listed->next;
-    if(possibleOperator && possibleOperator->opBool == OP_TRUE && (possibleOperator->compRoot->oper+1)/2 == 0)
-    {
-      struct parseList* right = possibleOperator->next;
-      compressParseListOverOperator(listed, possibleOperator, right);
-    }
-    else
-    {
-      listed = listed->next;
-    }
-  }
-}
-
-void compressParseList_MUL(struct parseList* listed)
-{
-  while(listed)
-  {
-    struct parseList* possibleOperator = listed->next;
     if(possibleOperator && possibleOperator->opBool == OP_TRUE && (possibleOperator->compRoot->oper+1)/2 == 1)
     {
       struct parseList* right = possibleOperator->next;
@@ -300,13 +284,31 @@ void compressParseList_MUL(struct parseList* listed)
     }
   }
 }
-
-void compressParseList_ADD(struct parseList* listed)
+// 2
+void compressParseList_MUL(struct parseList* listed)
 {
   while(listed)
   {
     struct parseList* possibleOperator = listed->next;
     if(possibleOperator && possibleOperator->opBool == OP_TRUE && (possibleOperator->compRoot->oper+1)/2 == 2)
+    {
+      struct parseList* right = possibleOperator->next;
+      compressParseListOverOperator(listed, possibleOperator, right);
+    }
+    else
+    {
+      listed = listed->next;
+    }
+  }
+}
+
+// 3
+void compressParseList_ADD(struct parseList* listed)
+{
+  while(listed)
+  {
+    struct parseList* possibleOperator = listed->next;
+    if(possibleOperator && possibleOperator->opBool == OP_TRUE && (possibleOperator->compRoot->oper+1)/2 == ((ADD+1)/2))
     {
       struct parseList* right = possibleOperator->next;
       compressParseListOverOperator(listed, possibleOperator, right);

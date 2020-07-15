@@ -5,44 +5,22 @@
 
 #include "constants.h"
 
-typedef struct charnode {
-  char data;
-  struct charnode* next;
-} charnode;
+#include "charnode.h"
 
-// means of generating charlists/nodes
-charnode* makeCharnode(char c);
-charnode* strToCharlist(char* arg);
-charnode* intToCharlist(int num);
-charnode* doubleToCharlist(double x);
+void freeCharnode(struct charnode* singlular);
+struct charnode* trimCharnode(struct charnode* head);
 
-// freeing charlists/nodes
-void freeCharnodeList(charnode* head);
-void freeCharnode(charnode* singlular);
-
-// moving around nodes
-int length(charnode* head);
-charnode* append(charnode* head, charnode* toAppend);
-
-// debugging tool to see raw charnode structure
-void printCharnode(charnode* head);
-
-// output, input interpretting and cleanup
-charnode* trimCharnode(charnode* head);
-char* charnodeToString(charnode* head);
-char* wordfromscan();
-
-charnode* makeCharnode(char c) {
-  charnode* ret = malloc(sizeof(charnode));
+struct charnode* makeCharnode(char c) {
+  struct charnode* ret = malloc(sizeof(struct charnode));
   ret->data = c;
   ret->next = NULL;
   return ret;
 }
 
-charnode* strToCharlist(char* arg){
-  charnode* ret = NULL;
-  charnode* temp = ret;
-  for(int i = 0; i < strlen(arg); i++){
+struct charnode* strToCharlist(char* arg){
+  struct charnode* ret = NULL;
+  struct charnode* temp = ret;
+  for(int i = 0; i < (int) strlen(arg); i++){
     if(ret == NULL){
       ret = makeCharnode(arg[i]);
       temp = ret;
@@ -54,9 +32,9 @@ charnode* strToCharlist(char* arg){
   return ret;
 }
 
-charnode* intToCharlist(int num){
-  charnode* ret = NULL;
-  charnode* temp = ret;
+struct charnode* intToCharlist(int num){
+  struct charnode* ret = NULL;
+  struct charnode* temp = ret;
   while(num != 0){
     char numeral = (char)(num % 10 + ZERO_CHAR);
     if(ret == NULL){
@@ -72,13 +50,13 @@ charnode* intToCharlist(int num){
   return ret;
 }
 
-charnode* floatToCharlist(float f){
+struct charnode* floatToCharlist(float f){
   char output[50];
   snprintf(output, 50, "%.3e", f);
   return strToCharlist(output);
 }
 
-void freeCharnodeList(charnode* head) {
+void freeCharnodeList(struct charnode* head) {
   //printf("entering freecharnode list: %p\n", head);
   if (head) {
     //printf("head: %p \"%c\"\n", head, head->data);
@@ -88,15 +66,15 @@ void freeCharnodeList(charnode* head) {
   //printf("exiting freecharnode list\n");
 }
 
-void freeCharnode(charnode* singular){
+void freeCharnode(struct charnode* singular){
   free(singular);
 }
 
-charnode* append(charnode* head, charnode* toAppend){
+struct charnode* append(struct charnode* head, struct charnode* toAppend){
   if(!head){
     return toAppend;
   }
-  charnode* temp = head;
+  struct charnode* temp = head;
   while(temp->next){
     temp = temp->next;
   }
@@ -104,7 +82,7 @@ charnode* append(charnode* head, charnode* toAppend){
   return head;
 }
 
-void printCharnode(charnode* head) {
+void printCharnode(struct charnode* head) {
   if (head) {
     printf("%c -> ", head->data);
     printCharnode(head->next);
@@ -113,7 +91,7 @@ void printCharnode(charnode* head) {
   }
 }
 
-int length(charnode* head) {
+int length(struct charnode* head) {
   if (head) {
     return 1 + length(head->next);
   }
@@ -124,10 +102,10 @@ int length(charnode* head) {
  * so that when taking in the string '    hello  '
  * the char node holds h->e->l->l->o->(nil)
  */
-charnode* trimCharnode(charnode* head) {
+struct charnode* trimCharnode(struct charnode* head) {
   if(head){
     if(head->data == ' '){
-      charnode* temp = trimCharnode(head->next);
+      struct charnode* temp = trimCharnode(head->next);
       if (temp == NULL) {
         freeCharnode(head);
         return trimCharnode(temp);
@@ -143,7 +121,7 @@ charnode* trimCharnode(charnode* head) {
   }
 }
 
-char* charnodeToString(charnode* head) {
+char* charnodeToString(struct charnode* head) {
   //head = trimCharnode(head);
   int len = length(head);
   char* ret = malloc(sizeof(char)*(len + 1));
@@ -157,8 +135,8 @@ char* charnodeToString(charnode* head) {
 }
 
 char* wordFromScan() {
-  charnode* item = NULL;
-  charnode* temp = NULL;
+  struct charnode* item = NULL;
+  struct charnode* temp = NULL;
   char c = getc(stdin);
   int beginning = 1;
   if (c != '\n') {

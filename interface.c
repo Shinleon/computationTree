@@ -37,8 +37,8 @@ int main()
   int exit = 0;
   while(!exit)
   { 
-    printf("in  :>>>  ");
-    char* command = wordFromScan(); // should be trimmed
+    printf("in  <<<:  ");
+    char* command = wordFromScan(); // should be trimmed already...
     // printf("\"%s\"\n", command);
     if(strcmp("exit", command) == 0 || strcmp("quit", command) == 0)
     {
@@ -106,7 +106,7 @@ int main()
           float f = evalCompNode(compRoot, env, NULL, errorCatch);
           if(*errorCatch == 0)
           {
-            printf("out <<<:  %e\n", f);
+            printf("out :>>>  %e\n", f);
           }
           free(errorCatch);
           freeCompNode(compRoot);
@@ -122,21 +122,20 @@ int main()
   }
   //full free of environment
   freeEnvironmentNode(env);
-
 }
 
 // splits original on the first equal sign '='
 // copies lef of equal to left and copies right of equal to right;
 void splitOnEqual(char* original, char** left, char** right)
 {
-  charnode* leftTemp = NULL;
+  struct charnode* leftTemp = NULL;
 
-  charnode* rightTemp = NULL;
-  charnode* rightAddPoint = NULL;
+  struct charnode* rightTemp = NULL;
+  struct charnode* rightAddPoint = NULL;
 
   int equal = 0; //tracks if we've seen an equal sign yet
-  charnode* lastnonWhitespace = NULL;
-  for(int i = 0; i < strlen(original); i++)
+  struct charnode* lastnonWhitespace = NULL;
+  for(int i = 0; i < (int) strlen(original); i++)
   {
     if(original[i] == '=' && !equal)
     {
@@ -202,7 +201,7 @@ int verify(char* name)
   else 
   {
     struct charnode* trigger = NULL;
-    for(int i = 0; i < strlen(name); i++)
+    for(int i = 0; i < (int) strlen(name); i++)
     {
       if(i == 1)
       {

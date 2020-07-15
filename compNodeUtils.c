@@ -23,7 +23,7 @@
 
 char* compNodeToString(struct compNode* node);
 
-charnode *mergeOnOperator(struct compNode *node, char operator);
+struct charnode *mergeOnOperator(struct compNode *node, char operator);
 
 struct compNode *makeCompNode(
     enum operations type,
@@ -39,7 +39,7 @@ struct compNode *makeCompNode(
   return ret;
 }
 
-charnode *compNodeToCharnode(struct compNode* node)
+struct charnode *compNodeToCharnode(struct compNode* node)
 {
   if (!node)
   {
@@ -66,11 +66,11 @@ charnode *compNodeToCharnode(struct compNode* node)
   return NULL;
 }
 
-charnode* mergeOnOperator(struct compNode *node, char operator)
+struct charnode* mergeOnOperator(struct compNode *node, char operator)
 {
-  charnode* ret = compNodeToCharnode(node->left);
-  charnode* mid = makeCharnode(operator);
-  charnode* aft = compNodeToCharnode(node->right);
+  struct charnode* ret = compNodeToCharnode(node->left);
+  struct charnode* mid = makeCharnode(operator);
+  struct charnode* aft = compNodeToCharnode(node->right);
   aft = append(aft, makeCharnode(')'));
   mid = append(mid, aft);
   ret = append(ret, mid);
@@ -81,7 +81,7 @@ charnode* mergeOnOperator(struct compNode *node, char operator)
 
 char* compNodeToString(struct compNode* node)
 {
-  charnode* temp = compNodeToCharnode(node);
+  struct charnode* temp = compNodeToCharnode(node);
   char* ret = charnodeToString(temp);
   freeCharnodeList(temp);
   return ret;
