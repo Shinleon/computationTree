@@ -43,9 +43,13 @@ e.g. "32 - (3-4)\*5^2/(VAR + 2)\n" would be digested into
 
 This then is used to make a parseList stuct defined in parserDef.h,
 that converts each item into a compNode struct (to be explained further 
-down) and holds them in sequence.
+down) and holds them in sequence.  
 
 #### How the sequence of characters becomes a computable tree
+
+Methods in charToCompTranslation, convert
+this charnode linked list into a sequence of computationNodes that are placed
+into a parseList structure.
 
 The parseList for the example above would look like (using ' to surround
 variable name, nothing to surround floats, " to surround operators, and 
@@ -60,8 +64,8 @@ subparen field of the parseList struct)
 ```
 
 An evaluator then goes through the parseList, first evaluting the parenthesis
-statements recursively, then compressing around the exponentiation symbol ["^"]
-then multiplication and division, then addition and subtraction
+statements recursively, then compressing around the exponentiation symbol [```"^"```]
+then multiplication and division [```"*", "/"```], then addition and subtraction [```"+", "-"```]
 
 e.g. first pass (parenthesis compaction)
 ```
