@@ -42,7 +42,7 @@ e.g. ```32 - (3-4)*5^2/(VAR + 2)\n``` would be digested into
 ```
 
 This then is used to make a parseList stuct defined in parserDef.h,
-that converts each item into a compNode struct (to be explained further 
+that converts each char into part of a compNode struct (to be explained further 
 down) and holds them in sequence.  
 
 #### How the sequence of characters becomes a computable tree
