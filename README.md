@@ -92,10 +92,11 @@ e.g. third pass (multiplication and division)
 e.g. fourth pass (addition and subtraction)
 ```
          "-" ->\  
-       //    \\  
-      //      \\  
+        /    \  
+       /      \  
      32       "/"  
-             <   >  
+            /     \
+           /       \ 
           /         \  
         "*"       "+"  
        /   \      / \  
