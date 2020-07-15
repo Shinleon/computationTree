@@ -53,7 +53,7 @@ into a parseList structure.
 
 The parseList for the example above would look like (using ' to surround
 variable name, nothing to surround floats, " to surround operators, and 
-a downward arrow to represent holding no computationNode but something in the 
+a downward arrow to represent holding no computationNode but a non-NULL parseList in the 
 subparen field of the parseList struct)
 
 ```
@@ -127,8 +127,8 @@ Otherwise, if no "=" was provided, the computation node is evaluated using compu
 who looks through the tree solving from leaves all the way up to the root; if a variable is
 used in the evaluation, it records it in dependencies and looks for it in the "env" variable
 which stores all the previously declared variables. If a necessary variable isn't declared, then
-an error message is provided to the terminal, or if a variable has a recursive definiton
-an error message is again, output to the terminal.
+an error message is provided to the terminal, or if a variable has a recursive definiton,
+an error message is, again, output to the terminal.
 
 ## Potential Future Additions
 --- 
@@ -147,7 +147,7 @@ lists?]
 3. simplifications, so that 2^2^x can be compacted to 4^x and 2*(3+4)* (x - 3)
 will become 14*x - 42
 
-4. functions like variables, so that one can declare a variable as "f(x)" and 
+4. function like variables, so that one can declare a variable as "f(x)" and 
 eventually introduce a derivative/integral like computation.
 
 5. graphing. requiring some sort of pop up image output.
