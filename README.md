@@ -130,7 +130,7 @@ which stores all the previously declared variables. If a necessary variable isn'
 an error message is provided to the terminal, or if a variable has a recursive definiton
 an error message is again, output to the terminal.
 
-## Future Additions
+## Potential Future Additions
 --- 
 
 In no particular order
@@ -158,5 +158,10 @@ eventually introduce a derivative/integral like computation.
  so that you could write out instead of typing.
 
 8. negatives. so you can type -VAR instead of (0-VAR) for the negative of a variable
+
+9. Memory locality. Asking for one large malloc call upfront and then allocating all
+ my structures in that memory call and freeing them in that memory block so that
+ I can guarantee that they're close in memory address, maybe giving some sort of speed 
+ gain(?)
 
 
