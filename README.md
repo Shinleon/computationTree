@@ -22,8 +22,9 @@ e.g. "32 - (3-4)\*5^2/(VAR + 2)\n" would be digested into
 -> '/' -> 'V' -> 'A' -> 'R' -> '(' -> '+' -> '2' -> ')' ->\ 
 ```
 
-This then is used to make a parseList stuct that converts each item into a 
-compNode struct (to be explained further down) and holds them in sequence.
+This then is used to make a parseList stuct defined in parserDef.h,
+that converts each item into a compNode struct (to be explained further 
+down) and holds them in sequence.
 
 The parseList for the example above would look like (using ' to surround
 variable name, nothing to surround floats, " to surround operators, and 
