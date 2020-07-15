@@ -141,7 +141,8 @@ and rm will have to become a forbidden variable name.
 2. being able to store multiple values in a float 
 variable, so one can hold a log scale/linear list of items and then when
 asked for the value of variables that depend on the float variable, a list 
-will be returned.
+will be returned [what if a variable depends on two or three variables that are
+lists?]
 
 3. simplifications, so that 2^2^x can be compacted to 4^x and 2*(3+4)* (x - 3)
 will become 14*x - 42
