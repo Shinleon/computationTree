@@ -10,7 +10,7 @@ the first two because they're how you quit the program, and the last
 because inputting "env" [without the quotes], will print to the terminal
 all declared variables and their values.
 
-##Implementation
+## Implementation
 ---
 
 The interface (in interface.c) digests input as a string. It then splits the string
@@ -23,7 +23,7 @@ string provided to the splitting function.
 For example, inputting "3\*4.5" will evaluate to 13.5 where as inputting
 "VAR = 3\*4.5" will store ```13.5``` in "VAR". Spaces are ignored in input.
 
-#####How the right string is evaluated
+##### How the right string is evaluated
 
 
 The digestion of inputs happens using repeated calls to getc(stdin) in
@@ -106,7 +106,7 @@ e.g. fourth pass (addition and subtraction)
 ```
 
 
-##Future Additions
+## Future Additions
 --- 
 
 In no particular order
