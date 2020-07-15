@@ -10,6 +10,10 @@ the first two because they're how you quit the program, and the last
 because inputting "env" [without the quotes], will print to the terminal
 all declared variables and their values.
 
+A Makefile is provided so you can just type ```make``` if you're using Linux and
+have ```gcc ``` available.
+Thanks! And if you have any recommendations please e-mail me:  
+wombatinkombat@protonmail.com.
 ## Implementation
 ---
 
@@ -21,7 +25,8 @@ string provided to the splitting function.
 
 
 For example, inputting "3\*4.5" will evaluate to 13.5 where as inputting
-"VAR = 3\*4.5" will store ```13.5``` in "VAR". Spaces are ignored in input.
+"VAR = 3\*4.5" will store ```13.5``` in "VAR". Spaces are ignored in input unless
+they're in the middle of a float or variable name in which case they cause an error.
 
 ##### How the right string is evaluated
 
@@ -105,6 +110,17 @@ e.g. fourth pass (addition and subtraction)
     3   4 5   2  
 ```
 
+This parseList is then free'd while the compNode underneath is returned to 
+the interface. The interface then looks back and if there was an "=" in the original
+input, the output is assigned to a variable of name that was user provided, and the
+environment is printed.
+
+Otherwise, if no "=" was provided, the computation node is evaluated using computer.c
+who looks through the tree solving from leaves all the way up to the root; if a variable is
+used in the evaluation, it records it in dependencies and looks for it in the "env" variable
+which stores all the previously declared variables. If a necessary variable isn't declared, then
+an error message is provided to the terminal, or if a variable has a recursive definiton
+an error message is again, output to the terminal.
 
 ## Future Additions
 --- 
@@ -114,12 +130,12 @@ In no particular order
 1. variables will eventually be able to be deleted using "rm={variable_vame}"
 and rm will have to become a forbidden variable name. 
 
-2. being able to store muliple values in a float 
+2. being able to store multiple values in a float 
 variable, so one can hold a log scale/linear list of items and then when
 asked for the value of variables that depend on the float variable, a list 
 will be returned.
 
-3. simplifications, so that 2^2^x will be compacted to 4^x and 2*(3+4)* (x - 3)
+3. simplifications, so that 2^2^x can be compacted to 4^x and 2*(3+4)* (x - 3)
 will become 14*x - 42
 
 4. functions like variables, so that one can declare a variable as "f(x)" and 
