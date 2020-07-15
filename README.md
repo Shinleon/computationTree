@@ -23,13 +23,10 @@ The left strings goes into the storage, while the right string is evaluated.
 If there is no equal sign, the right string will be characterwise equal to the 
 string provided to the splitting function, while the left string will be empty.
 
-
 For example, inputting "3\*4.5" will evaluate to 13.5 where as inputting
 "VAR = 3\*4.5" will store ```13.5``` in "VAR". Spaces are ignored in input unless
 they're in the middle of a float or variable name in which case they cause an error.
 
-#### How the right string is evaluated
---- 
 The digestion of inputs happens using repeated calls to ```getc(stdin)``` in
 charnode.c . Each character is added to a linked list of a struct that holds
 a char and a pointer to the next charnode.
