@@ -1,5 +1,5 @@
-#ifndef NODEDEF_H
-#define NODEDEF_H
+#ifndef COMPNODEDEF_H
+#define COMPNODEDEF_H
 
 union Data 
 {
