@@ -128,7 +128,8 @@ who looks through the tree solving from leaves all the way up to the root; if a 
 used in the evaluation, it records it in dependencies and looks for it in the "env" variable
 which stores all the previously declared variables. If a necessary variable isn't declared, then
 an error message is provided to the terminal, or if a variable has a recursive definiton,
-an error message is, again, output to the terminal.
+an error message is, again, output to the terminal. If everything goes smoothly with no errors,
+then the expression is evaluated and output to the terminal.
 
 ## Potential Future Additions
 --- 
