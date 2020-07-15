@@ -1,8 +1,3 @@
-/* FINAL: wordnode.h
- * Leonard Shin
- * CSE 374
- * SPRING 2020
- */
 
 #ifndef WORDNODE_H
 #define WORDNODE_H

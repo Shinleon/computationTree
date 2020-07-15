@@ -1,8 +1,3 @@
-/* FINAL: wordnode.c
- * Leonard Shin
- * CSE 374
- * SPRING 2020
- */
 
 #include <stdlib.h>
 #include <stdio.h>
