@@ -16,6 +16,7 @@ a char and a pointer to the next charnode.
 When it reaches the newline character, it stops and points the last node to NULL;
 
 e.g. 32 - (3-4)\*5^2/VAR + 2 would be digested into
+
 '''
 '3' -> '2' -> '-' -> '(' -> '3' -> '-' -> '4' -> ')' -> '*' -> '5' -> '^' -> '2' 
 -> '/' -> 'V' -> 'A' -> 'R' -> '+' -> '2' ->\ 
