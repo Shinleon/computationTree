@@ -81,7 +81,7 @@ e.g. third pass (multiplication and division)
         3   4   5   2  
 
 32 -> "-" -> "/" ->\  
-          /      \
+          /       \
         "*"        "+"
       /     \      / \  
     "-"     "^"  'VAR' 2  
