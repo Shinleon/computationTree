@@ -1,6 +1,8 @@
 #ifndef COMPNODEDEF_H
 #define COMPNODEDEF_H
 
+#define RAW_TO_PEMDAS(X) (((X)+1)/2)
+
 union Data 
 {
   char* varName;

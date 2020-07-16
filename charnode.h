@@ -12,7 +12,7 @@ struct charnode* strToCharlist(char* arg);
 struct charnode* intToCharlist(int num);
 struct charnode* floatToCharlist(float f);
 
-void freeCharnodeList( struct charnode* head);
+void freeCharnodeList(struct charnode* head);
 
 struct charnode* append(struct charnode* head, struct charnode* toAppend);
 int length(struct charnode* head);

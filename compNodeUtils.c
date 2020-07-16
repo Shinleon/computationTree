@@ -23,7 +23,7 @@
 
 char* compNodeToString(struct compNode* node);
 
-struct charnode *mergeOnOperator(struct compNode *node, char operator);
+struct charnode* mergeOnOperator(struct compNode* node, struct compNode* parent, char operator);
 
 struct compNode *makeCompNode(
     enum operations type,
@@ -39,7 +39,7 @@ struct compNode *makeCompNode(
   return ret;
 }
 
-struct charnode *compNodeToCharnode(struct compNode* node)
+struct charnode *compNodeToCharnode(struct compNode* node, struct compNode* parent)
 {
   if (!node)
   {
@@ -48,40 +48,43 @@ struct charnode *compNodeToCharnode(struct compNode* node)
   switch (node->oper)
   {
   case EXP:
-    return mergeOnOperator(node, '^');
+    return mergeOnOperator(node, parent, '^');
   case MUL:
-    return mergeOnOperator(node, '*');
+    return mergeOnOperator(node, parent, '*');
   case QUO:
-    return mergeOnOperator(node, '/');
+    return mergeOnOperator(node, parent, '/');
   case SUB:
-    return mergeOnOperator(node, '-');
+    return mergeOnOperator(node, parent, '-');
   case ADD:
-    return mergeOnOperator(node, '+');
+    return mergeOnOperator(node, parent, '+');
   case VAR:
     return strToCharlist(node->d->varName);
   case NUM:
     return floatToCharlist(node->d->num);
-    //return intToCharlist((int)node->d->num);
   }
   return NULL;
 }
 
-struct charnode* mergeOnOperator(struct compNode *node, char operator)
+// 
+struct charnode* mergeOnOperator(struct compNode* node, struct compNode* parent, char operator)
 {
-  struct charnode* ret = compNodeToCharnode(node->left);
+  struct charnode* ret = compNodeToCharnode(node->left, node);
   struct charnode* mid = makeCharnode(operator);
-  struct charnode* aft = compNodeToCharnode(node->right);
-  aft = append(aft, makeCharnode(')'));
-  mid = append(mid, aft);
-  ret = append(ret, mid);
-  ret = append(makeCharnode('('), ret);
+  struct charnode* aft = compNodeToCharnode(node->right, node);
+  if(parent && (RAW_TO_PEMDAS(parent->oper) < RAW_TO_PEMDAS(node->oper)))
+  {
+    aft = append(aft, makeCharnode(')')); // aft + )
+    ret = append(makeCharnode('('), ret); // ( + ret 
+  }
+  mid = append(mid, aft); // mid + aft + )
+  ret = append(ret, mid); // ( + ret + mid  + aft + )
   return ret;
 }
 
 
 char* compNodeToString(struct compNode* node)
 {
-  struct charnode* temp = compNodeToCharnode(node);
+  struct charnode* temp = compNodeToCharnode(node, NULL);
   char* ret = charnodeToString(temp);
   freeCharnodeList(temp);
   return ret;
@@ -89,7 +92,7 @@ char* compNodeToString(struct compNode* node)
 
 void freeData(union Data* d, enum operations oper)
 {
-  if(d)
+  if (d)
   {
     if(oper == VAR)
     {
@@ -101,7 +104,7 @@ void freeData(union Data* d, enum operations oper)
 
 void freeCompNode(struct compNode* root)
 {
-  if(root)
+  if (root)
   {
     freeCompNode(root->left);
     freeCompNode(root->right);

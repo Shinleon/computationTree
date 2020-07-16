@@ -10,7 +10,7 @@
 
 #define DIV_BY_ZERO (-3)
 #define UNDECLARED_VAR (-2)
-#define RECURSEIV_VAR  (-1)
+#define RECURSIVE_VAR  (-1)
 
 // appropriate gcc call //
 // gcc -std=c11 -Wall -g -o test computer.c compNodeUtils.c charnode.c environmentTree.c wordnode.c -lm
@@ -38,9 +38,16 @@ float evalCompNode(struct compNode* node, struct environmentNode* env, struct wo
         {
           return  dividend / divisor;
         }
-        printf("Division by zero detected in expression;\n");
-        *errorCode = DIV_BY_ZERO;
-        return __FLT_MAX__;
+        if(*errorCode == 0)
+        {
+          printf("Division by zero detected in expression;\n");
+          *errorCode = DIV_BY_ZERO;
+          return __FLT_MAX__;
+        }
+        else
+        {
+          return 0;
+        }
       }
     case SUB:
       return evalCompNode(node->left, env, dependencies, errorCode) - evalCompNode(node->right, env, dependencies, errorCode);
@@ -48,9 +55,6 @@ float evalCompNode(struct compNode* node, struct environmentNode* env, struct wo
       return evalCompNode(node->left, env, dependencies, errorCode) + evalCompNode(node->right, env, dependencies, errorCode);
     case VAR: 
       {
-        // need to make environment aka, envirTree 
-        // will replace soon.
-
         // // STEPS
         // search environment Tree for node's varName // [ADD env as parameter]
         // get it as varEnvNode;
@@ -73,7 +77,7 @@ float evalCompNode(struct compNode* node, struct environmentNode* env, struct wo
         {
           printf("ERROR: recursively defined variable: '%s' : ", node->d->varName);
           printWordnode(dependencies);
-          *errorCode = RECURSEIV_VAR;
+          *errorCode = RECURSIVE_VAR;
           return __FLT_MAX__;
         }
         dependencies = linearInsert(dependencies, makeWordnode(node->d->varName));
@@ -91,6 +95,7 @@ float evalCompNode(struct compNode* node, struct environmentNode* env, struct wo
   }
   exit(-1);
 }
+
 
 /*
 void test()
