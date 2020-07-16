@@ -30,10 +30,10 @@ $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -o interactible $(OBJS) -lm
 
 # Individual source files
-charnode.o: charnode.c constants.h
+charnode.o: charnode.c charnode.h constants.h
 	$(CC) $(CFLAGS) -c charnode.c
 
-wordnode.o: wordnode.c
+wordnode.o: wordnode.c wordnode.h
 	$(CC) $(CFLAGS) -c wordnode.c
 
 environmentTree.o: environmentTree.c compNodeUtils.o compNodeDef.h
