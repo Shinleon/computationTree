@@ -35,6 +35,7 @@ struct compNode *makeCompNode(
   ret->oper = type;
   ret->left = l;
   ret->right = r;
+  ret->vardep = NULL;
   ret->d = d;
   return ret;
 }
@@ -109,6 +110,7 @@ void freeCompNode(struct compNode* root)
     freeCompNode(root->left);
     freeCompNode(root->right);
     freeData(root->d, root->oper);
+
     free(root);
   }
 }

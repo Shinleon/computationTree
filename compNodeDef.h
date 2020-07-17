@@ -24,6 +24,7 @@ struct compNode
   enum operations oper;
   struct compNode* left;
   struct compNode* right;
+  struct environmentNode* vardep;
   union Data* d;
 };
 
