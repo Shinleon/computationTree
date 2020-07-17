@@ -9,10 +9,19 @@ the first two because they're how you quit the program, and the last
 because inputting "env" [without the quotes], will print to the terminal
 all declared variables and their values.
 
+```
+Master is the branch to copy or fork. I have some [really] bad code in parserUtils.c
+with regards to the functions "compresssParseList_XXX" that could be compacted into one function
+that's called four times using an int as a parameter to control what operation it's 
+compacting, but ignore that for now. I left it that way because I was unsure how functions
+were going to fit in PEMDAS (which should be figured out in my FunctionImplementation Branch(?))
+```
+
 A Makefile is provided so you can just type ```make``` if you're using Linux and
 have ```gcc ``` available.  
 Thanks! And if you have any recommendations (even if it's formatting or typos in my readMe.md,
-maybe how to organize my files, or coding style suggestions) please e-mail me: 
+maybe how to organize my files, a clearer/cleaner interface, or coding style suggestions)
+please e-mail me:  
 wombatinkombat@protonmail.com.
 ## Implementation
 ---
