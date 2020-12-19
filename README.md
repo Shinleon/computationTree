@@ -1,5 +1,5 @@
 # computationTree
-**This project is currently dead, as I realized that my implementation here is terrible, my code is all over the place with files accessing each other's struct's without regard to the fact that I need to be able to refactor and add to code without having to change every single file, so I've recreated the project with better interfaces in this repo**
+**This project is currently dead, as I realized that my implementation here is terrible, my code is all over the place with files accessing each other's struct's without regard to the fact that I need to be able to refactor and add to code without having to change every single file, so I've recreated the project with better interfaces in https://github.com/Shinleon/computationNode-Redesign**
 
 
 This program is made to digest and evaluate simple expressions composed
