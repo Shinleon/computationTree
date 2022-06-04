@@ -1,7 +1,4 @@
-# computationTree
-**This project is currently dead, as I realized that my implementation here is terrible, my code is all over the place with files accessing each other's struct's without regard to the fact that I need to be able to refactor and add to code without having to change every single file.
-
-
+# Command line, tree based computer with variables and lazy/immediate evaluation.
 This program is made to digest and evaluate simple expressions composed
 of operators[```"^", "*", "/", "+", "-"```], floats, 
 variables["a-zA-Z\_"], and parenthesis (to adjust operator precedence).
